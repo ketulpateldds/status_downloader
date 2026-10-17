@@ -1,12 +1,16 @@
 /* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V5 */
-/* Hallmark · macrostructure: Workbench (M05) · theme: Newsprint Wire · nav: N1b · footer: Ft5 */
+/* Hallmark · macrostructure: Workbench (M05) · theme variants switcher system */
 /* Hallmark · discipline: all headers roman (no italic headers) · locked tokens · root overflow-x: clip */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* -------------------------------------------------------------------------
+ * BASE TOKENS: Variant 1 · Newsprint Wire (Default)
+ * ------------------------------------------------------------------------- */
+:root,
+html[data-variant="newsprint"] {
   --color-paper: oklch(0.975 0.008 85);
   --color-paper-2: oklch(0.955 0.012 85);
   --color-paper-3: oklch(0.925 0.015 85);
@@ -32,7 +36,8 @@
   --font-mono: var(--font-jetbrains), Menlo, monospace;
 }
 
-.dark {
+.dark,
+html[data-variant="newsprint"].dark {
   --color-paper: oklch(0.18 0.01 60);
   --color-paper-2: oklch(0.22 0.01 60);
   --color-paper-3: oklch(0.26 0.01 60);
@@ -54,6 +59,229 @@
   --color-focus: oklch(0.68 0.22 38);
 }
 
+/* -------------------------------------------------------------------------
+ * VARIANT 2: Modern-Minimal ("Cobalt" · Linear / Raycast Style)
+ * ------------------------------------------------------------------------- */
+html[data-variant="cobalt"] {
+  --color-paper: #f8fafc;
+  --color-paper-2: #ffffff;
+  --color-paper-3: #f1f5f9;
+  --color-paper-hover: #e2e8f0;
+
+  --color-ink: #0f172a;
+  --color-ink-muted: #475569;
+  --color-ink-faint: #94a3b8;
+
+  --color-signal: #2563eb;
+  --color-signal-hover: #1d4ed8;
+  --color-signal-subtle: #eff6ff;
+  --color-signal-text: #ffffff;
+
+  --color-border: #e2e8f0;
+  --color-border-subtle: #f1f5f9;
+  --color-border-strong: #0f172a;
+
+  --color-focus: #2563eb;
+
+  --font-serif: var(--font-jakarta), system-ui, sans-serif;
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), Menlo, monospace;
+}
+
+html[data-variant="cobalt"].dark {
+  --color-paper: #0b0f19;
+  --color-paper-2: #111827;
+  --color-paper-3: #1f2937;
+  --color-paper-hover: #1e293b;
+
+  --color-ink: #f9fafb;
+  --color-ink-muted: #9ca3af;
+  --color-ink-faint: #6b7280;
+
+  --color-signal: #3b82f6;
+  --color-signal-hover: #60a5fa;
+  --color-signal-subtle: #172554;
+  --color-signal-text: #ffffff;
+
+  --color-border: #1f2937;
+  --color-border-subtle: #182234;
+  --color-border-strong: #60a5fa;
+
+  --color-focus: #3b82f6;
+
+  --font-serif: var(--font-jakarta), system-ui, sans-serif;
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), Menlo, monospace;
+}
+
+/* -------------------------------------------------------------------------
+ * VARIANT 3: Bold Neo-Brutalist ("Brutal" · Industrial Tool)
+ * ------------------------------------------------------------------------- */
+html[data-variant="brutal"] {
+  --color-paper: #fffdf5;
+  --color-paper-2: #ffffff;
+  --color-paper-3: #f5f0dc;
+  --color-paper-hover: #fde047;
+
+  --color-ink: #000000;
+  --color-ink-muted: #262626;
+  --color-ink-faint: #525252;
+
+  --color-signal: #facc15;
+  --color-signal-hover: #eab308;
+  --color-signal-subtle: #fef08a;
+  --color-signal-text: #000000;
+
+  --color-border: #000000;
+  --color-border-subtle: #a3a3a3;
+  --color-border-strong: #000000;
+
+  --color-focus: #000000;
+
+  --font-serif: var(--font-jakarta), system-ui, sans-serif;
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), Menlo, monospace;
+}
+
+html[data-variant="brutal"].dark {
+  --color-paper: #0a0a0a;
+  --color-paper-2: #171717;
+  --color-paper-3: #262626;
+  --color-paper-hover: #333333;
+
+  --color-ink: #ffffff;
+  --color-ink-muted: #d4d4d4;
+  --color-ink-faint: #a3a3a3;
+
+  --color-signal: #facc15;
+  --color-signal-hover: #fde047;
+  --color-signal-subtle: #422006;
+  --color-signal-text: #000000;
+
+  --color-border: #ffffff;
+  --color-border-subtle: #525252;
+  --color-border-strong: #ffffff;
+
+  --color-focus: #facc15;
+
+  --font-serif: var(--font-jakarta), system-ui, sans-serif;
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), Menlo, monospace;
+}
+
+/* -------------------------------------------------------------------------
+ * VARIANT 4: Atmospheric Studio ("Bloom" · Cinematic Velvet & Gold)
+ * ------------------------------------------------------------------------- */
+html[data-variant="bloom"] {
+  --color-paper: #f7f7f8;
+  --color-paper-2: #ffffff;
+  --color-paper-3: #efeff1;
+  --color-paper-hover: #e5e5e8;
+
+  --color-ink: #18181b;
+  --color-ink-muted: #52525b;
+  --color-ink-faint: #a1a1aa;
+
+  --color-signal: #d97706;
+  --color-signal-hover: #b45309;
+  --color-signal-subtle: #fef3c7;
+  --color-signal-text: #ffffff;
+
+  --color-border: #e4e4e7;
+  --color-border-subtle: #f4f4f5;
+  --color-border-strong: #18181b;
+
+  --color-focus: #d97706;
+
+  --font-serif: var(--font-newsreader), Georgia, serif;
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), Menlo, monospace;
+}
+
+html[data-variant="bloom"].dark {
+  --color-paper: #121316;
+  --color-paper-2: #181a1f;
+  --color-paper-3: #22242b;
+  --color-paper-hover: #282a33;
+
+  --color-ink: #ede9fe;
+  --color-ink-muted: #a1a1aa;
+  --color-ink-faint: #71717a;
+
+  --color-signal: #f59e0b;
+  --color-signal-hover: #fbbf24;
+  --color-signal-subtle: #3b2506;
+  --color-signal-text: #121316;
+
+  --color-border: #272a34;
+  --color-border-subtle: #1e2028;
+  --color-border-strong: #f59e0b;
+
+  --color-focus: #f59e0b;
+
+  --font-serif: var(--font-newsreader), Georgia, serif;
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), Menlo, monospace;
+}
+
+/* -------------------------------------------------------------------------
+ * VARIANT 5: Refined Editorial ("Atelier" · Broadsheet Parchment & Forest)
+ * ------------------------------------------------------------------------- */
+html[data-variant="atelier"] {
+  --color-paper: #f4f1ea;
+  --color-paper-2: #faf8f5;
+  --color-paper-3: #ede8de;
+  --color-paper-hover: #e3ddd0;
+
+  --color-ink: #1c1917;
+  --color-ink-muted: #57534e;
+  --color-ink-faint: #a8a29e;
+
+  --color-signal: #166534;
+  --color-signal-hover: #14532d;
+  --color-signal-subtle: #dcfce7;
+  --color-signal-text: #ffffff;
+
+  --color-border: #d6d0c4;
+  --color-border-subtle: #e7e2d8;
+  --color-border-strong: #1c1917;
+
+  --color-focus: #166534;
+
+  --font-serif: var(--font-newsreader), Georgia, serif;
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), Menlo, monospace;
+}
+
+html[data-variant="atelier"].dark {
+  --color-paper: #191816;
+  --color-paper-2: #22201d;
+  --color-paper-3: #2c2926;
+  --color-paper-hover: #36332e;
+
+  --color-ink: #f5f5f4;
+  --color-ink-muted: #d6d3d1;
+  --color-ink-faint: #78716c;
+
+  --color-signal: #22c55e;
+  --color-signal-hover: #4ade80;
+  --color-signal-subtle: #052e16;
+  --color-signal-text: #052e16;
+
+  --color-border: #3b3835;
+  --color-border-subtle: #2b2825;
+  --color-border-strong: #22c55e;
+
+  --color-focus: #22c55e;
+
+  --font-serif: var(--font-newsreader), Georgia, serif;
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), Menlo, monospace;
+}
+
+/* -------------------------------------------------------------------------
+ * GLOBAL RULES & DISCIPLINES
+ * ------------------------------------------------------------------------- */
 html, body {
   background-color: var(--color-paper);
   color: var(--color-ink);
@@ -111,9 +339,15 @@ h1, h2, h3, h4, h5, h6 {
   border-color: var(--color-ink);
 }
 
-/* Perforated ticket edge */
-.ticket-edge {
-  background-image: radial-gradient(circle at 10px -5px, transparent 12px, var(--color-paper) 13px);
+/* Hard offset shadow in brutalist variant */
+html[data-variant="brutal"] .wire-card {
+  border-width: 2px;
+  box-shadow: 3px 3px 0px 0px var(--color-ink);
+}
+
+html[data-variant="brutal"] .wire-btn {
+  border-width: 2px;
+  box-shadow: 3px 3px 0px 0px var(--color-ink);
 }
 
 /* Subtle archival grid pattern */
@@ -129,5 +363,3 @@ h1, h2, h3, h4, h5, h6 {
   outline: 2px solid var(--color-signal);
   outline-offset: 2px;
 }
-
-/* reload */

@@ -77,7 +77,23 @@ export default function RootLayout({
       className={`${newsreader.variable} ${plusJakarta.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
-      <body className="min-h-screen flex flex-col bg-paper text-ink transition-colors selection:bg-signal selection:text-white">
+              <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var v = localStorage.getItem('dispatch_theme_variant') || 'newsprint';
+                  document.documentElement.setAttribute('data-variant', v);
+                  var t = localStorage.getItem('theme');
+                  if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+        <body className="min-h-screen flex flex-col bg-paper text-ink transition-colors selection:bg-signal selection:text-white">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
