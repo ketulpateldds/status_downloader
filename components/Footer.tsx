@@ -1,138 +1,170 @@
-import React from 'react';
-import Link from 'next/link';
-import { platformList } from '@/content/platforms';
-import { ShieldAlert, Terminal, Lock, Globe } from 'lucide-react';
+import React from "react";
+import Link from "next/link";
+import { Download, ShieldCheck } from "lucide-react";
 
 export function Footer() {
+  const downloaders = [
+    { name: "YouTube Downloader", href: "/youtube" },
+    { name: "Instagram Downloader", href: "/instagram" },
+    { name: "TikTok Downloader", href: "/tiktok" },
+    { name: "Facebook Downloader", href: "/facebook" },
+    { name: "X (Twitter) Downloader", href: "/twitter" },
+    { name: "Pinterest Downloader", href: "/pinterest" },
+    { name: "Snapchat Downloader", href: "/snapchat" },
+  ];
+
+  const converters = [
+    { name: "Video to MP3", href: "/video-to-mp3" },
+    { name: "Video to MP4", href: "/video-to-mp4" },
+    { name: "Image Converter", href: "/image-converter" },
+    { name: "Audio Converter", href: "/audio-converter" },
+    { name: "Compress Video", href: "/compress-video" },
+  ];
+
+  const resources = [
+    { name: "How It Works", href: "/#how-it-works" },
+    { name: "Guides & Blog", href: "/blog" },
+    { name: "Help Center & FAQ", href: "/help" },
+  ];
+
+  const legal = [
+    { name: "Terms of Service", href: "/terms" },
+    { name: "Privacy Policy", href: "/privacy" },
+    { name: "DMCA & Takedown Policy", href: "/dmca" },
+    { name: "Disclaimer", href: "/disclaimer" },
+    { name: "Contact Support", href: "/contact" },
+  ];
+
   return (
-    <footer className="bg-paper-2 border-t border-border mt-24">
-      {/* Responsible Use Banner */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 border-b border-border-subtle">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs font-mono text-ink-muted bg-paper p-4 border border-border">
-          <div className="flex items-center gap-3">
-            <ShieldAlert className="w-5 h-5 text-signal shrink-0" />
-            <span>
-              <strong>POLICY NOTICE:</strong> Only download media you own or have explicit creator permission to store locally. Dispatch strictly operates on open, publicly published URLs.
-            </span>
-          </div>
-          <Link
-            href="/dmca"
-            className="text-signal hover:underline shrink-0 font-semibold"
-          >
-            DMCA Policy & Takedowns &rarr;
-          </Link>
-        </div>
-      </div>
-
-      {/* Ft5 Statement Ledger Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
-        {/* Col 1: Identity */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-ink text-paper font-serif font-bold text-center text-sm leading-6">
-              D
+    <footer className="bg-white border-t border-slate-100 py-10 text-sm text-navy-muted">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Main Footer Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-100">
+          {/* Brand Col */}
+          <div className="lg:col-span-1 space-y-4">
+            <Link href="/" className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-brand-gradient flex items-center justify-center shadow-sm">
+                <Download className="w-5 h-5 text-white" strokeWidth={2.5} />
+              </div>
+              <span className="font-extrabold text-xl tracking-tight text-navy">
+                Dispatch
+              </span>
+            </Link>
+            <p className="text-sm leading-relaxed text-navy-muted">
+              Your friendly online media downloader and converter. Save public
+              videos, music, and photos in seconds with zero fuss.
+            </p>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold">
+              <ShieldCheck className="w-4 h-4 text-emerald-600" />
+              <span>100% Free · No Ads · Private</span>
             </div>
-            <span className="font-serif font-bold text-lg text-ink">DISPATCH</span>
           </div>
-          <p className="text-xs text-ink-muted leading-relaxed">
-            An independent, zero-compromise frontend utility for inspecting and saving public social media assets without telemetry, predatory ads, or third-party logins.
+
+          {/* Downloaders Col */}
+          <div>
+            <h3 className="font-bold text-navy text-sm uppercase tracking-wider mb-4">
+              Downloaders
+            </h3>
+            <ul className="space-y-2.5">
+              {downloaders.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="hover:text-brand-blue transition-colors text-navy-muted"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Converters Col */}
+          <div>
+            <h3 className="font-bold text-navy text-sm uppercase tracking-wider mb-4">
+              Converters
+            </h3>
+            <ul className="space-y-2.5">
+              {converters.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="hover:text-brand-blue transition-colors text-navy-muted"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Resources Col */}
+          <div>
+            <h3 className="font-bold text-navy text-sm uppercase tracking-wider mb-4">
+              Resources
+            </h3>
+            <ul className="space-y-2.5">
+              {resources.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="hover:text-brand-blue transition-colors text-navy-muted"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Legal Col */}
+          <div>
+            <h3 className="font-bold text-navy text-sm uppercase tracking-wider mb-4">
+              Legal & Safety
+            </h3>
+            <ul className="space-y-2.5">
+              {legal.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="hover:text-brand-blue transition-colors text-navy-muted"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Disclaimer & Copyright */}
+        <div className="pt-8 space-y-4 text-xs text-slate-400">
+          <p className="leading-relaxed">
+            <strong>Disclaimer:</strong> Not affiliated with YouTube, Instagram,
+            TikTok, Facebook, X, Pinterest, or Snapchat. Dispatch does not host
+            or store any videos on its servers. All media is downloaded directly
+            from third-party content delivery networks. Users are solely
+            responsible for ensuring they have the legal right or permission to
+            download and store any content.
           </p>
-          <div className="font-mono text-[11px] text-ink-faint space-y-1">
-            <div>FRAMEWORK: NEXT.JS APP ROUTER</div>
-            <div>STATUS: ZERO BACKEND LOGS</div>
-            <div>LICENSE: PUBLIC CITIZEN UTILITY</div>
-          </div>
-        </div>
 
-        {/* Col 2: Platform Tools */}
-        <div className="space-y-3 font-mono text-xs">
-          <div className="font-serif font-bold text-sm text-ink tracking-tight uppercase">
-            Platform Utilities
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 text-slate-500 font-medium">
+            <div>&copy; 2026 Dispatch. All rights reserved.</div>
+            <div className="flex items-center gap-6">
+              <Link href="/privacy" className="hover:text-navy">
+                Privacy
+              </Link>
+              <Link href="/terms" className="hover:text-navy">
+                Terms
+              </Link>
+              <Link href="/dmca" className="hover:text-navy">
+                DMCA
+              </Link>
+              <Link href="/contact" className="hover:text-navy">
+                Contact
+              </Link>
+            </div>
           </div>
-          <ul className="space-y-2">
-            {platformList.map((plat) => (
-              <li key={plat.slug}>
-                <Link
-                  href={'/' + plat.slug}
-                  className="text-ink-muted hover:text-signal transition-colors flex items-center pr-4"
-                >
-                  <span className='pr-2'>{plat.name}</span>
-                  <span className="text-[11px] text-ink-faint">&rarr;</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Col 3: Research & Archival */}
-        <div className="space-y-3 font-mono text-xs">
-          <div className="font-serif font-bold text-sm text-ink tracking-tight uppercase">
-            Dispatches & Editorial
-          </div>
-          <ul className="space-y-2">
-            <li>
-              <Link href="/blog/why-public-media-archiving-matters" className="text-ink-muted hover:text-signal">
-                Why Public Archiving Matters
-              </Link>
-            </li>
-            <li>
-              <Link href="/blog/understanding-video-bitrates-and-codecs" className="text-ink-muted hover:text-signal">
-                Video Bitrates & Codec Breakdown
-              </Link>
-            </li>
-            <li>
-              <Link href="/blog/fair-use-and-responsible-offline-storage" className="text-ink-muted hover:text-signal">
-                Fair Use Legal Blueprint
-              </Link>
-            </li>
-            <li>
-              <Link href="/blog" className="text-signal hover:underline font-semibold">
-                Browse All Dispatches &rarr;
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        {/* Col 4: Legal & Policy */}
-        <div className="space-y-3 font-mono text-xs">
-          <div className="font-serif font-bold text-sm text-ink tracking-tight uppercase">
-            Legal & Governance
-          </div>
-          <ul className="space-y-2">
-            <li>
-              <Link href="/dmca" className="text-ink-muted hover:text-signal">
-                DMCA / Copyright Takedown
-              </Link>
-            </li>
-            <li>
-              <Link href="/privacy" className="text-ink-muted hover:text-signal">
-                Stateless Privacy Policy
-              </Link>
-            </li>
-            <li>
-              <Link href="/terms" className="text-ink-muted hover:text-signal">
-                Terms of Public Use
-              </Link>
-            </li>
-            <li>
-              <Link href="/disclaimer" className="text-ink-muted hover:text-signal">
-                Legal Disclaimer
-              </Link>
-            </li>
-            <li>
-              <Link href="/contact" className="text-ink-muted hover:text-signal">
-                Contact Desk
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      {/* Bottom Bar */}
-      <div className="border-t border-border py-4 px-4 sm:px-6 text-center font-mono text-[11px] text-ink-faint">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>&copy; {new Date().getFullYear()} DISPATCH MEDIA WIRE · PUBLIC CITIZEN ACCESSIBILITY</span>
-          <span>NOT AFFILIATED WITH META, GOOGLE, BYTEDANCE, X CORP, SNAP INC, OR PINTEREST</span>
         </div>
       </div>
     </footer>

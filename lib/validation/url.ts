@@ -2,11 +2,11 @@ import { z } from 'zod';
 
 export const urlSchema = z.string()
   .trim()
-  .min(1, 'Please enter or paste a URL')
-  .url('Please enter a valid web URL starting with https://')
+  .min(1, 'Please paste a video or post link')
+  .url('Please enter a valid web link starting with https://')
   .refine(
     (url) => !url.includes('facebook.com/messages') && !url.includes('instagram.com/direct'),
-    'Private chats and messages cannot be fetched.'
+    'Private chats and direct messages cannot be downloaded.'
   );
 
 export function validateInputUrl(url: string): { success: boolean; error?: string } {

@@ -1,61 +1,45 @@
 import type { Metadata, Viewport } from 'next';
-import { Newsreader, Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google';
+import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { CookieBanner } from '@/components/CookieBanner';
-
-const newsreader = Newsreader({
-  subsets: ['latin'],
-  variable: '--font-newsreader',
-  display: 'swap',
-  style: ['normal'], // Discipline: No italic display
-  weight: ['400', '600', '700'],
-});
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
   variable: '--font-jakarta',
   display: 'swap',
-  weight: ['400', '500', '600', '700'],
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-jetbrains',
-  display: 'swap',
-  weight: ['400', '500', '700'],
+  weight: ['400', '500', '600', '700', '800'],
 });
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#fbfbf9' },
-    { media: '(prefers-color-scheme: dark)', color: '#161616' },
-  ],
+  themeColor: '#2b5fe6',
   width: 'device-width',
   initialScale: 1,
 };
 
 export const metadata: Metadata = {
   title: {
-    default: 'Dispatch · Free Public Social Media Video & Audio Utility',
-    template: '%s · Dispatch Public Media Wire',
+    default: 'Dispatch · Free Online Video & Audio Downloader',
+    template: '%s · Dispatch',
   },
   description:
-    'Independent frontend utility for inspecting and saving public social media reels, videos, shorts, photos, and high-fidelity MP3 audio. 100% free, private, and public content only.',
+    'Download videos, music, and photos from YouTube, Instagram, TikTok, Facebook, X, Pinterest, and Snapchat. Fast, safe, 100% free, and no registration needed.',
   keywords: [
-    'social media downloader',
-    'public video archive',
-    'reels downloader',
-    'shorts downloader',
-    'tiktok without watermark',
-    'extract mp3 from video',
-    'public media desk',
+    'dispatch video downloader',
+    'free video downloader',
+    'youtube downloader',
+    'instagram reels downloader',
+    'tiktok downloader without watermark',
+    'convert video to mp3',
+    'facebook video downloader',
+    'twitter x video downloader',
+    'save online video',
   ],
   metadataBase: new URL('https://dispatch.local'),
   openGraph: {
-    title: 'Dispatch · The Public Media Utility Desk',
-    description: 'Precision web media stream inspector and archiver. Zero tracking, no accounts, public content only.',
+    title: 'Dispatch · Download, Convert and Save Any Media',
+    description:
+      'Paste a link, pick a format, and get your video, music or photo in seconds. Free, safe, and easy.',
     siteName: 'Dispatch',
     locale: 'en_US',
     type: 'website',
@@ -72,32 +56,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${newsreader.variable} ${plusJakarta.variable} ${jetbrainsMono.variable}`}
-      suppressHydrationWarning
-    >
-              <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var v = localStorage.getItem('dispatch_theme_variant') || 'newsprint';
-                  document.documentElement.setAttribute('data-variant', v);
-                  var t = localStorage.getItem('theme');
-                  if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                    document.documentElement.classList.add('dark');
-                  }
-                } catch (e) {}
-              })();
-            `,
-          }}
-        />
-        <body className="min-h-screen flex flex-col bg-paper text-ink transition-colors selection:bg-signal selection:text-white">
+    <html lang="en" className={plusJakarta.variable} suppressHydrationWarning>
+      <body className="min-h-screen flex flex-col font-sans text-navy antialiased">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
-        <CookieBanner />
       </body>
     </html>
   );

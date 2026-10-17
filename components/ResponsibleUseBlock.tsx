@@ -1,6 +1,6 @@
-import React from 'react';
-import Link from 'next/link';
-import { Scale, Lock, ShieldAlert, FileText } from 'lucide-react';
+import React from "react";
+import Link from "next/link";
+import { Scale, Lock, ShieldAlert, FileText } from "lucide-react";
 
 export function ResponsibleUseBlock() {
   return (
@@ -16,20 +16,30 @@ export function ResponsibleUseBlock() {
               Public Content Policy & Creator Rights
             </h2>
             <p className="font-sans text-sm text-ink-muted leading-relaxed">
-              Dispatch is engineered specifically for lawful, personal offline study, non-commercial research, academic documentation, and media preservation. We maintain three immutable principles:
+              Dispatch is engineered specifically for lawful, personal offline
+              study, non-commercial research, academic documentation, and media
+              preservation. We maintain three immutable principles:
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 font-mono text-xs">
               <div className="p-3 bg-paper wire-border">
                 <div className="font-bold text-ink">1. Strictly Public</div>
-                <div className="text-[11px] text-ink-muted mt-1">Zero bypass of private account locks or follow-gated media.</div>
+                <div className="text-[11px] text-ink-muted mt-1">
+                  Zero bypass of private account locks or follow-gated media.
+                </div>
               </div>
               <div className="p-3 bg-paper wire-border">
                 <div className="font-bold text-ink">2. Non-Commercial</div>
-                <div className="text-[11px] text-ink-muted mt-1">Intended for personal offline access. Never resell creator assets.</div>
+                <div className="text-[11px] text-ink-muted mt-1">
+                  Intended for personal offline access. Never resell creator
+                  assets.
+                </div>
               </div>
               <div className="p-3 bg-paper wire-border">
                 <div className="font-bold text-ink">3. DMCA Responsive</div>
-                <div className="text-[11px] text-ink-muted mt-1">Prompt compliance with verified creator takedown notifications.</div>
+                <div className="text-[11px] text-ink-muted mt-1">
+                  Prompt compliance with verified creator takedown
+                  notifications.
+                </div>
               </div>
             </div>
           </div>
@@ -39,7 +49,10 @@ export function ResponsibleUseBlock() {
               Are you a Content Creator?
             </div>
             <p className="font-sans text-xs text-ink-muted leading-relaxed">
-              If your public media has been referenced here and you wish to block its resolution or request removal under the Digital Millennium Copyright Act (DMCA), our compliance desk responds within 24 hours.
+              If your public media has been referenced here and you wish to
+              block its resolution or request removal under the Digital
+              Millennium Copyright Act (DMCA), our compliance desk responds
+              within 24 hours.
             </p>
             <Link
               href="/dmca"

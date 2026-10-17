@@ -6,7 +6,7 @@ export const mp3Content: PlatformContent = {
   tagline: 'Precision Audio Demuxer for Public Web Streams & Spoken Dispatches',
   heroH1: 'Extract High-Fidelity MP3 Audio from Any Public Video Link',
   heroSubtitle: 'Isolate crystal-clear audio tracks, spoken lectures, acoustic performances, and field dispatches from public video URLs. Encoded in universal 320kbps MP3 fidelity with metadata tags preserved.',
-  placeholderText: 'Paste any public video or media link (YouTube, Instagram, TikTok, Twitter, Vimeo, etc.)',
+  placeholderText: 'Paste any public video or media link (YouTube, Instagram, TikTok, Twitter, Facebook, etc.)',
   accentColor: 'oklch(0.60 0.20 145)',
   acceptedLinkExamples: [
     'https://www.youtube.com/watch?v=example',
@@ -143,7 +143,7 @@ export const mp3Content: PlatformContent = {
   faqs: [
     {
       question: 'Which platforms can I extract MP3 audio from?',
-      answer: 'Dispatch supports extracting audio from all major public video platforms including YouTube, Instagram Reels, TikTok, X (Twitter), Facebook, and Vimeo.',
+      answer: 'Dispatch supports extracting audio from all major public video platforms including YouTube, Instagram Reels, TikTok, X (Twitter), Facebook, Pinterest, and Snapchat.',
     },
     {
       question: 'What is the bitrate of the downloaded MP3 files?',

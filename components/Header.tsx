@@ -1,293 +1,291 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { platformList } from '@/content/platforms';
-import { Menu, X, Sun, Moon, ArrowUpRight, Palette, Check } from 'lucide-react';
-
-interface ThemeVariant {
-  id: string;
-  name: string;
-  tagline: string;
-  swatchColor: string;
-}
-
-const THEME_VARIANTS: ThemeVariant[] = [
-  {
-    id: 'newsprint',
-    name: 'Newsprint Wire',
-    tagline: 'Tactile cream, carbon ink & signal orange (Default)',
-    swatchColor: '#f97316',
-  },
-  {
-    id: 'cobalt',
-    name: 'Modern Minimal',
-    tagline: 'Deep obsidian & electric cobalt (Linear / Raycast style)',
-    swatchColor: '#2563eb',
-  },
-  {
-    id: 'brutal',
-    name: 'Neo-Brutalist',
-    tagline: 'High-contrast black & vibrant highlighter yellow',
-    swatchColor: '#facc15',
-  },
-  {
-    id: 'bloom',
-    name: 'Atmospheric Studio',
-    tagline: 'Titanium velvet & luminous warm amber gold',
-    swatchColor: '#d97706',
-  },
-  {
-    id: 'atelier',
-    name: 'Refined Editorial',
-    tagline: 'Parchment stone, classical serif & forest green',
-    swatchColor: '#166534',
-  },
-];
+import React, { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Menu, X, ChevronDown, Download } from "lucide-react";
+import { PlatformAppTile } from "./PlatformIcon";
 
 export function Header() {
-  const [isDark, setIsDark] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [currentVariant, setCurrentVariant] = useState('newsprint');
-  const [variantDropdownOpen, setVariantDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [downloadersOpen, setDownloadersOpen] = useState(false);
+  const [convertersOpen, setConvertersOpen] = useState(false);
   const pathname = usePathname();
 
+  const downloadersRef = useRef<HTMLDivElement>(null);
+  const convertersRef = useRef<HTMLDivElement>(null);
+
+  // Close menus on outside click
   useEffect(() => {
-    // 1. Initialize Theme (Dark/Light)
-    const isDarkStored =
-      localStorage.getItem('theme') === 'dark' ||
-      (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    setIsDark(isDarkStored);
-    if (isDarkStored) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-
-    // 2. Initialize Variant
-    const storedVariant = localStorage.getItem('dispatch_theme_variant') || 'newsprint';
-    setCurrentVariant(storedVariant);
-    document.documentElement.setAttribute('data-variant', storedVariant);
-
-    // 3. Click outside listener for dropdown
     const handleClickOutside = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setVariantDropdownOpen(false);
+      if (
+        downloadersRef.current &&
+        !downloadersRef.current.contains(e.target as Node)
+      ) {
+        setDownloadersOpen(false);
+      }
+      if (
+        convertersRef.current &&
+        !convertersRef.current.contains(e.target as Node)
+      ) {
+        setConvertersOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const toggleTheme = () => {
-    const nextDark = !isDark;
-    setIsDark(nextDark);
-    if (nextDark) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  };
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    setDownloadersOpen(false);
+    setConvertersOpen(false);
+  }, [pathname]);
 
-  const handleSelectVariant = (variantId: string) => {
-    setCurrentVariant(variantId);
-    localStorage.setItem('dispatch_theme_variant', variantId);
-    document.documentElement.setAttribute('data-variant', variantId);
-    setVariantDropdownOpen(false);
-  };
+  const platformLinks = [
+    { name: "YouTube", slug: "youtube", badge: "HD & 8K" },
+    {
+      name: "Instagram",
+      slug: "instagram",
+      badge: "Reels & Stories",
+    },
+    { name: "TikTok", slug: "tiktok", badge: "No Watermark" },
+    { name: "Facebook", slug: "facebook", badge: "Reels & Watch" },
+    { name: "X (Twitter)", slug: "twitter", badge: "HD & GIFs" },
+    { name: "Pinterest", slug: "pinterest", badge: "Videos & Pins" },
+    { name: "Snapchat", slug: "snapchat", badge: "Spotlight" },
+  ];
 
-  const activeVariantObj = THEME_VARIANTS.find((v) => v.id === currentVariant) || THEME_VARIANTS[0];
+  const converterLinks = [
+    {
+      name: "Video to MP3",
+      slug: "video-to-mp3",
+      desc: "Extract high quality 320 kbps audio",
+    },
+    {
+      name: "Video to MP4",
+      slug: "video-to-mp4",
+      desc: "Convert videos to universal MP4 format",
+    },
+    {
+      name: "Image Converter",
+      slug: "image-converter",
+      desc: "Convert JPG, PNG, and WebP images",
+    },
+    {
+      name: "Audio Converter",
+      slug: "audio-converter",
+      desc: "Convert to MP3, WAV, and M4A",
+    },
+    {
+      name: "Compress Video",
+      slug: "compress-video",
+      desc: "Reduce file size without quality loss",
+    },
+  ];
 
   return (
-    <header className="sticky top-0 z-50 bg-paper/95 backdrop-blur-md border-b border-border transition-colors">
+    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 transition-all">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        {/* Brand Logo: Dispatch */}
+        <Link href="/" className="flex items-center gap-2.5 group">
+          <div className="w-10 h-10 rounded-xl bg-brand-gradient flex items-center justify-center shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
+            <Download className="w-5 h-5 text-white" strokeWidth={2.5} />
+          </div>
+          <span className="font-extrabold text-2xl tracking-tight text-navy">
+            Dispatch
+          </span>
+        </Link>
 
-      {/* Main Nav Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        {/* Brand Wordmark */}
-        <div className="flex items-center gap-6">
-          <Link href="/" className="group flex items-center gap-2">
-            <div className="w-7 h-7 bg-ink text-paper flex items-center justify-center font-serif font-bold text-lg group-hover:bg-signal transition-colors">
-              D
-            </div>
-            <div className="flex flex-col">
-              <span className="font-serif font-bold text-xl tracking-tight text-ink group-hover:text-signal transition-colors">
-                DISPATCH
-              </span>
-              <span className="font-mono text-[9px] uppercase tracking-widest text-ink-muted -mt-1">
-                Public Media Utility
-              </span>
-            </div>
-          </Link>
-
-          {/* Quick Platform Chips (Desktop) */}
-          <nav className="hidden lg:flex items-center gap-1 pl-4 border-l border-border">
-            {platformList.slice(0, 6).map((plat) => {
-              const active = pathname === '/' + plat.slug;
-              return (
-                <Link
-                  key={plat.slug}
-                  href={'/' + plat.slug}
-                  className={`px-2.5 py-1 text-xs font-mono rounded transition-colors ${
-                    active
-                      ? 'bg-ink text-paper font-semibold'
-                      : 'text-ink-muted hover:text-ink hover:bg-paper-hover'
-                  }`}
-                >
-                  {plat.name.split(' ')[0]}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
-
-        {/* Right Actions */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-1 lg:gap-2">
           <Link
-            href="/blog"
-            className="hidden md:inline-flex text-xs font-mono font-medium text-ink-muted hover:text-ink px-2.5 py-1"
+            href="/"
+            className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
+              pathname === "/"
+                ? "text-brand-blue font-semibold"
+                : "text-navy-muted hover:text-navy hover:bg-slate-50"
+            }`}
           >
-            BLOG
+            Home
           </Link>
 
-          {/* ============================================================= */}
-          {/* THEME VARIANT DROPDOWN MENU (FOR CLIENT REVIEW)               */}
-          {/* ============================================================= */}
-          <div className="relative" ref={dropdownRef}>
+          {/* Downloaders Dropdown */}
+          <div className="relative" ref={downloadersRef}>
             <button
-              onClick={() => setVariantDropdownOpen(!variantDropdownOpen)}
-              className="px-2.5 py-1.5 border border-border text-ink hover:border-ink rounded-none bg-paper text-xs font-mono flex items-center gap-1.5 transition-colors shadow-tactile-sm"
-              aria-label="Select design aesthetic variant"
+              onClick={() => setDownloadersOpen(!downloadersOpen)}
+              className="flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-medium text-navy-muted hover:text-navy hover:bg-slate-50 transition-colors"
+              aria-expanded={downloadersOpen}
             >
-              <Palette className="w-3.5 h-3.5 text-signal" />
-              <span className="hidden sm:inline">Theme:</span>
-              <span className="font-semibold text-signal">{activeVariantObj.name}</span>
-              <span className="text-[10px] text-ink-muted">▾</span>
+              <span>Downloaders</span>
+              <ChevronDown
+                className={`w-4 h-4 transition-transform duration-200 ${downloadersOpen ? "rotate-180 text-brand-blue" : ""}`}
+              />
             </button>
 
-            {/* Dropdown Card */}
-            {variantDropdownOpen && (
-              <div className="absolute right-0 mt-1.5 w-72 sm:w-80 bg-paper wire-border shadow-tactile p-2 z-50 font-sans space-y-1">
-                <div className="px-2 py-1.5 border-b border-border-subtle font-mono text-[10px] uppercase text-ink-faint flex items-center justify-between">
-                  <span>Hallmark Design Variants</span>
-                  <span className="text-signal font-bold">5 Available</span>
+            {downloadersOpen && (
+              <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-2xl shadow-hover border border-slate-100 p-2 grid gap-1 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="px-3 py-1.5 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                  Supported Platforms
                 </div>
-
-                <div className="pt-1 space-y-1">
-                  {THEME_VARIANTS.map((variant) => {
-                    const isSelected = variant.id === currentVariant;
-                    return (
-                      <button
-                        key={variant.id}
-                        type="button"
-                        onClick={() => handleSelectVariant(variant.id)}
-                        className={`w-full text-left p-2.5 wire-border text-xs flex items-start justify-between gap-3 transition-all ${
-                          isSelected
-                            ? 'bg-ink text-paper border-ink'
-                            : 'bg-paper text-ink hover:bg-paper-2 hover:border-ink'
-                        }`}
-                      >
-                        <div className="space-y-0.5">
-                          <div className="flex items-center gap-2">
-                            <span
-                              className="w-2.5 h-2.5 rounded-full inline-block shrink-0 border border-black/20"
-                              style={{ backgroundColor: variant.swatchColor }}
-                            />
-                            <span className="font-serif font-bold text-sm leading-none">
-                              {variant.name}
-                            </span>
-                          </div>
-                          <p className={`text-[11px] leading-snug ${isSelected ? 'text-paper/70' : 'text-ink-muted'}`}>
-                            {variant.tagline}
-                          </p>
-                        </div>
-
-                        {isSelected && (
-                          <Check className="w-4 h-4 text-signal shrink-0 mt-0.5" />
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                <div className="px-2 pt-2 pb-1 border-t border-border-subtle text-[10px] font-mono text-ink-faint leading-tight">
-                  Live client switcher · Instant token hot-reload
-                </div>
+                {platformLinks.map((plat) => (
+                  <Link
+                    key={plat.slug}
+                    href={`/${plat.slug}`}
+                    onClick={() => setDownloadersOpen(false)}
+                    className="flex items-center justify-between px-3 py-2 rounded-xl text-sm text-navy hover:bg-blue-50 hover:text-brand-blue transition-colors group"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <PlatformAppTile
+                        platform={plat.slug}
+                        className="w-6 h-6 rounded-lg"
+                        iconClassName="w-3.5 h-3.5"
+                      />
+                      <span className="font-medium">{plat.name}</span>
+                    </div>
+                    <span className="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 text-navy-muted group-hover:bg-blue-100 group-hover:text-brand-blue font-semibold">
+                      {plat.badge}
+                    </span>
+                  </Link>
+                ))}
               </div>
             )}
           </div>
 
-          {/* Theme Toggle (Light / Dark) */}
-          <button
-            onClick={toggleTheme}
-            aria-label="Toggle visual theme mode"
-            className="p-2 border border-border text-ink hover:border-ink rounded-none bg-paper transition-colors shadow-tactile-sm"
-          >
-            {isDark ? <Sun className="w-4 h-4 text-signal" /> : <Moon className="w-4 h-4" />}
-          </button>
+          {/* Converters Dropdown */}
+          <div className="relative" ref={convertersRef}>
+            <button
+              onClick={() => setConvertersOpen(!convertersOpen)}
+              className="flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-medium text-navy-muted hover:text-navy hover:bg-slate-50 transition-colors"
+              aria-expanded={convertersOpen}
+            >
+              <span>Converters</span>
+              <ChevronDown
+                className={`w-4 h-4 transition-transform duration-200 ${convertersOpen ? "rotate-180 text-brand-blue" : ""}`}
+              />
+            </button>
 
-          {/* Mobile Drawer Trigger */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle navigation drawer"
-            className="lg:hidden p-2 border border-border text-ink hover:border-ink rounded-none bg-paper"
+            {convertersOpen && (
+              <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-2xl shadow-hover border border-slate-100 p-2 grid gap-1 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="px-3 py-1.5 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                  Format Conversion
+                </div>
+                {converterLinks.map((item) => (
+                  <Link
+                    key={item.slug}
+                    href={`/${item.slug}`}
+                    onClick={() => setConvertersOpen(false)}
+                    className="px-3 py-2 rounded-xl text-navy hover:bg-blue-50 hover:text-brand-blue transition-colors group"
+                  >
+                    <div className="font-medium text-sm text-navy group-hover:text-brand-blue">
+                      {item.name}
+                    </div>
+                    <div className="text-xs text-navy-muted">{item.desc}</div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <Link
+            href="/#tools"
+            className="px-3.5 py-2 rounded-lg text-sm font-medium text-navy-muted hover:text-navy hover:bg-slate-50 transition-colors"
           >
-            {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-          </button>
-        </div>
+            Tools
+          </Link>
+
+          <Link
+            href="/blog"
+            className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
+              pathname?.startsWith("/blog")
+                ? "text-brand-blue font-semibold"
+                : "text-navy-muted hover:text-navy hover:bg-slate-50"
+            }`}
+          >
+            Guides
+          </Link>
+        </nav>
+
+        {/* Mobile Hamburger Button */}
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="md:hidden p-2 rounded-xl text-navy hover:bg-slate-100 transition-colors"
+          aria-label="Toggle menu"
+        >
+          {mobileMenuOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
+        </button>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-paper-2 border-b border-border px-4 py-6 space-y-4 font-mono text-sm">
-          <div className="text-xs uppercase text-ink-faint font-semibold tracking-wider">
-            All Public Platform Tools
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            {platformList.map((plat) => (
-              <Link
-                key={plat.slug}
-                href={'/' + plat.slug}
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-2.5 border border-border bg-paper hover:border-ink text-xs flex items-center justify-between"
-              >
-                <span>{plat.name}</span>
-                <ArrowUpRight className="w-3.5 h-3.5 text-ink-muted" />
-              </Link>
-            ))}
+        <div className="md:hidden border-b border-slate-100 bg-white/95 backdrop-blur-lg px-4 pt-2 pb-6 space-y-3 animate-in fade-in duration-150">
+          <Link
+            href="/"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block px-3 py-2 rounded-xl text-base font-semibold text-navy hover:bg-slate-50"
+          >
+            Home
+          </Link>
+
+          <div className="pt-2">
+            <div className="px-3 text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
+              Supported Downloaders
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+              {platformLinks.map((plat) => (
+                <Link
+                  key={plat.slug}
+                  href={`/${plat.slug}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium text-navy hover:bg-blue-50 hover:text-brand-blue"
+                >
+                  <PlatformAppTile
+                    platform={plat.slug}
+                    className="w-5 h-5 rounded-md"
+                    iconClassName="w-3 h-3"
+                  />
+                  <span>{plat.name.replace(" Downloader", "")}</span>
+                </Link>
+              ))}
+            </div>
           </div>
 
-          <div className="pt-4 border-t border-border flex flex-col gap-2 text-xs">
+          <div className="pt-2 border-t border-slate-100">
+            <div className="px-3 text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
+              Conversion Tools
+            </div>
+            <div className="grid grid-cols-1 gap-1">
+              {converterLinks.map((c) => (
+                <Link
+                  key={c.slug}
+                  href={`/${c.slug}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-3 py-1.5 rounded-xl text-sm font-medium text-navy hover:bg-blue-50 hover:text-brand-blue"
+                >
+                  {c.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div className="pt-2 border-t border-slate-100 flex items-center justify-between px-3">
             <Link
               href="/blog"
               onClick={() => setMobileMenuOpen(false)}
-              className="py-1 text-ink-muted hover:text-ink"
+              className="text-sm font-medium text-navy hover:text-brand-blue"
             >
-              Archival Dispatches & Codec Guides (Blog)
+              Guides & Tutorials
             </Link>
             <Link
-              href="/about"
+              href="/help"
               onClick={() => setMobileMenuOpen(false)}
-              className="py-1 text-ink-muted hover:text-ink"
+              className="text-sm font-medium text-navy hover:text-brand-blue"
             >
-              About Dispatch Utility & Architecture
-            </Link>
-            <Link
-              href="/dmca"
-              onClick={() => setMobileMenuOpen(false)}
-              className="py-1 text-ink-muted hover:text-ink"
-            >
-              DMCA Content Takedown Notice
-            </Link>
-            <Link
-              href="/contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="py-1 text-ink-muted hover:text-ink"
-            >
-              Technical Contact Desk
+              Help Center
             </Link>
           </div>
         </div>

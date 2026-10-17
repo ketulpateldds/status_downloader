@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next';
-import { platformList } from '@/content/platforms';
+import { allPlatformSlugs } from '@/data/platforms';
 import { sampleArticles } from '@/content/blog';
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -7,6 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticPages = [
     '',
+    '/help',
     '/blog',
     '/about',
     '/contact',
@@ -18,11 +19,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: 'daily' as const,
-    priority: route === '' ? 1.0 : 0.7,
+    priority: route === '' ? 1.0 : 0.8,
   }));
 
-  const platformPages = platformList.map((p) => ({
-    url: `${baseUrl}/${p.slug}`,
+  const platformPages = allPlatformSlugs.map((slug) => ({
+    url: `${baseUrl}/${slug}`,
     lastModified: new Date(),
     changeFrequency: 'daily' as const,
     priority: 0.9,
@@ -32,7 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}/blog/${a.slug}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
-    priority: 0.6,
+    priority: 0.7,
   }));
 
   return [...staticPages, ...platformPages, ...blogPages];

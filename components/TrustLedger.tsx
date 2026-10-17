@@ -1,31 +1,35 @@
-import React from 'react';
-import { Zap, ShieldCheck, Laptop, Sparkles } from 'lucide-react';
+import React from "react";
+import { Zap, ShieldCheck, Laptop, Sparkles } from "lucide-react";
 
 export function TrustLedger() {
   const points = [
     {
       icon: Zap,
-      title: 'Direct Stream Resolution',
-      description: 'Zero queue delays or intermediary transcoding loops. Feeds connect straight to the highest-bitrate public CDN server.',
-      badge: 'SPEED: MAXIMUM',
+      title: "Direct Stream Resolution",
+      description:
+        "Zero queue delays or intermediary transcoding loops. Feeds connect straight to the highest-bitrate public CDN server.",
+      badge: "SPEED: MAXIMUM",
     },
     {
       icon: ShieldCheck,
-      title: 'Stateless & Private',
-      description: 'Zero tracking cookies, no accounts, and no logging of your requests. Your download activity is completely anonymous.',
-      badge: 'PRIVACY: ZERO LOGS',
+      title: "Stateless & Private",
+      description:
+        "Zero tracking cookies, no accounts, and no logging of your requests. Your download activity is completely anonymous.",
+      badge: "PRIVACY: ZERO LOGS",
     },
     {
       icon: Laptop,
-      title: 'Universal Hardware Fit',
-      description: 'Tested across modern Android, iOS Safari, macOS, Windows, and Linux. Outputs standard compliant MP4 and MP3 files.',
-      badge: 'COMPATIBILITY: ALL OS',
+      title: "Universal Hardware Fit",
+      description:
+        "Tested across modern Android, iOS Safari, macOS, Windows, and Linux. Outputs standard compliant MP4 and MP3 files.",
+      badge: "COMPATIBILITY: ALL OS",
     },
     {
       icon: Sparkles,
-      title: 'Clean Public Access',
-      description: '100% free with no subscription traps, no watermarks, and no deceptive pop-up download buttons.',
-      badge: 'TERMS: 100% FREE',
+      title: "Clean Public Access",
+      description:
+        "100% free with no subscription traps, no watermarks, and no deceptive pop-up download buttons.",
+      badge: "TERMS: 100% FREE",
     },
   ];
 

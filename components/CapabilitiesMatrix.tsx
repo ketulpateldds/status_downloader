@@ -1,43 +1,56 @@
-import React from 'react';
-import { Film, Image as ImageIcon, Music, Sparkles, Clock, FileText } from 'lucide-react';
+import React from "react";
+import {
+  Film,
+  Image as ImageIcon,
+  Music,
+  Sparkles,
+  Clock,
+  FileText,
+} from "lucide-react";
 
 export function CapabilitiesMatrix() {
   const capabilities = [
     {
       icon: Film,
-      title: 'Reels, Shorts & Videos',
-      formats: 'MP4 (1080p, 720p, 480p)',
-      description: 'Portrait and landscape video streams with audio preserved in sync. No watermarks on TikTok, no degradation on Reels.',
+      title: "Reels, Shorts & Videos",
+      formats: "MP4 (1080p, 720p, 480p)",
+      description:
+        "Portrait and landscape video streams with audio preserved in sync. No watermarks on TikTok, no degradation on Reels.",
     },
     {
       icon: Clock,
-      title: 'Active Public Stories',
-      formats: 'MP4 / JPEG (24h Window)',
-      description: 'Preserve fleeting announcements, breaking updates, and public creator dispatches before they drop from CDN caches.',
+      title: "Active Public Stories",
+      formats: "MP4 / JPEG (24h Window)",
+      description:
+        "Preserve fleeting announcements, breaking updates, and public creator dispatches before they drop from CDN caches.",
     },
     {
       icon: ImageIcon,
-      title: 'Uncompressed Photography',
-      formats: 'Master JPEG / PNG',
-      description: 'Bypasses thumbnail downscaling on Pinterest, Instagram carousels, and X to retrieve full optical resolution assets.',
+      title: "Uncompressed Photography",
+      formats: "Master JPEG / PNG",
+      description:
+        "Bypasses thumbnail downscaling on Pinterest, Instagram carousels, and X to retrieve full optical resolution assets.",
     },
     {
       icon: Music,
-      title: 'Standalone MP3 Audio',
-      formats: '320kbps MP3 / M4A',
-      description: 'Demuxes video containers into pristine standalone audio tracks for podcasts, interviews, lectures, and music reference.',
+      title: "Standalone MP3 Audio",
+      formats: "320kbps MP3 / M4A",
+      description:
+        "Demuxes video containers into pristine standalone audio tracks for podcasts, interviews, lectures, and music reference.",
     },
     {
       icon: Sparkles,
-      title: 'Looping Twitter/Pinterest GIFs',
-      formats: 'Animated GIF / Looping MP4',
-      description: 'Converts silent looped video feeds into universally shareable animated GIFs for Slack, Discord, and slide presentations.',
+      title: "Looping Twitter/Pinterest GIFs",
+      formats: "Animated GIF / Looping MP4",
+      description:
+        "Converts silent looped video feeds into universally shareable animated GIFs for Slack, Discord, and slide presentations.",
     },
     {
       icon: FileText,
-      title: 'Slide & Document Carousels',
-      formats: 'Complete Slide Packs',
-      description: 'Extract multi-slide educational carousels and infographics into chronological individual image frames.',
+      title: "Slide & Document Carousels",
+      formats: "Complete Slide Packs",
+      description:
+        "Extract multi-slide educational carousels and infographics into chronological individual image frames.",
     },
   ];
 
@@ -53,7 +66,8 @@ export function CapabilitiesMatrix() {
           </h2>
         </div>
         <p className="font-sans text-xs text-ink-muted max-w-md leading-relaxed">
-          Dispatch handles standard web media streams published across major platforms. Honest specifications on formats and boundaries.
+          Dispatch handles standard web media streams published across major
+          platforms. Honest specifications on formats and boundaries.
         </p>
       </div>
 

@@ -6,38 +6,95 @@ export interface BlogPost {
   readTime: string;
   author: string;
   category: string;
+  imageUrl?: string;
   contentMarkdown: string;
 }
 
 export const sampleArticles: BlogPost[] = [
   {
-    slug: 'why-public-media-archiving-matters',
-    title: 'The Ephemeral Web: Why Independent Public Media Archiving Matters',
-    excerpt: 'Digital content on corporate platforms disappears at an alarming rate. Here is how researchers, educators, and journalists preserve civic memory responsibly.',
-    publishedDate: 'October 12, 2026',
-    readTime: '6 min read',
-    author: 'Elena Vance · Media Research Fellow',
-    category: 'Digital Archival',
-    contentMarkdown: 'We often imagine the internet as an immutable permanent record. The reality is far more fragile: links rot, servers decommission, accounts delete, and corporate policy shifts wipe out invaluable historical and cultural artifacts overnight.\n\nAccording to recent studies by digital preservation institutes, over 38% of web pages that existed in 2013 are no longer accessible today. When platforms pivot algorithms or shutter legacy APIs, millions of hours of public discourse, civic testimony, independent journalism, and educational craft vanish.\n\n### The Difference Between Commercial Piracy and Ethical Archiving\n\nArchiving public media is not about re-uploading someone else work or seeking commercial gain. Ethical archiving rests on three pillars:\n\n1. Strictly Public Availability: Never accessing anything behind private follow walls, password gates, or encrypted channels.\n2. Attribution & Context Preservation: Storing metadata — author, publication date, platform source, and original caption — alongside the media asset.\n3. Personal & Educational Scope: Utilizing stored media for offline study, local reference, non-profit education, and archival verification.\n\nBuilding Resilient Local Archives\n\nRelying on streaming platforms for critical instructional or research material creates a single point of failure. By maintaining local, uncompressed copies of essential public resources on redundant drives, educators and researchers safeguard knowledge against algorithmic whims.',
+    slug: 'how-to-download-youtube-videos-high-quality',
+    title: 'How to Download YouTube Videos in High Quality (1080p, 4K & 8K)',
+    excerpt: 'Save your favorite YouTube videos, tutorials, and music in crystal-clear definition to watch offline anywhere, on any device.',
+    publishedDate: 'October 15, 2026',
+    readTime: '3 min read',
+    author: 'Dispatch Team',
+    category: 'YouTube Guide',
+    imageUrl: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=800&q=80',
+    contentMarkdown: `Downloading YouTube videos to your computer or phone lets you watch tutorials during flights, save recipe videos for the kitchen, and keep great lectures without buffering.
+
+### Step 1: Copy the YouTube Video Link
+Open YouTube in your browser or phone app. Find the video you want, click the **Share** button, and tap **Copy Link**.
+
+### Step 2: Paste into Dispatch
+Visit Dispatch and paste the link into the white search box. Our tool automatically recognizes YouTube links and prepares every available quality.
+
+### Step 3: Choose Your Resolution and Download
+- **1080p Full HD:** Best balance of sharp picture quality and reasonable file size for laptops and phones.
+- **4K Ultra HD:** Perfect for big TV screens and cinema displays.
+- **MP3 Audio:** Extract the music or speech track if you only want to listen.
+
+Click the **Download** button, and your file will begin saving directly to your device within seconds. No sign-up or software required!`,
   },
   {
-    slug: 'understanding-video-bitrates-and-codecs',
-    title: 'Demystifying Bitrates & Codecs: What You Actually Get When You Download Public Video',
-    excerpt: 'Why does 1080p on one site look sharper than 4K on another? A technical breakdown of H.264, VP9, AV1, and adaptive streaming multiplexing.',
+    slug: 'how-to-download-instagram-reels-and-stories',
+    title: 'How to Download Instagram Reels and Stories in Seconds',
+    excerpt: 'Save public Instagram Reels, funny clips, and disappearing 24-hour stories straight to your phone camera roll.',
+    publishedDate: 'October 10, 2026',
+    readTime: '3 min read',
+    author: 'Dispatch Team',
+    category: 'Instagram Guide',
+    imageUrl: 'https://images.unsplash.com/photo-1611162618071-b39a2ec055fb?auto=format&fit=crop&w=800&q=80',
+    contentMarkdown: `Instagram is full of creative Reels and inspiring Stories, but finding a post again days later is often frustrating. Here is the easiest way to save them forever.
+
+### How to Save Instagram Reels on iPhone & Android
+1. In the Instagram app, tap the **Share** icon (the paper airplane or three dots) on any public Reel.
+2. Tap **Copy Link**.
+3. Open Safari or Chrome and go to Dispatch.
+4. Paste the link into the box and tap **Download**.
+5. On iPhone, tap the downloaded file and choose **Save Video** to move it into your Photos app. On Android, it appears in your Gallery automatically.
+
+### Saving Public Stories Before They Expire
+Instagram stories disappear after 24 hours. As long as the creator account is public, you can copy the Story link and download the full video before the 24 hours are up.`,
+  },
+  {
+    slug: 'best-tiktok-video-downloader-without-watermark',
+    title: 'Best TikTok Video Downloader: Save Clean Videos Without Watermark',
+    excerpt: 'Remove the bouncing TikTok watermark and save clean, high-definition MP4 videos and trending sounds.',
+    publishedDate: 'October 5, 2026',
+    readTime: '4 min read',
+    author: 'Dispatch Team',
+    category: 'TikTok Guide',
+    imageUrl: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=800&q=80',
+    contentMarkdown: `When you use the official TikTok "Save Video" button, a large bouncing watermark covers parts of the clip. Dispatch allows you to save clean, original TikTok videos with zero watermarks.
+
+### Why Download Without Watermark?
+- **Cleaner Playback:** Enjoy uninterrupted video without annoying bouncing logos.
+- **Save Photo Slideshows:** Extract each high-res image from viral photo carousels.
+- **Extract Audio:** Save viral background songs and voice filters as portable MP3s.
+
+### Quick 3-Step Guide
+1. Open the TikTok app and tap the **Share Arrow**.
+2. Tap **Copy Link**.
+3. Paste the URL into Dispatch, click **Download Without Watermark**, and enjoy your clean video!`,
+  },
+  {
+    slug: 'how-to-convert-video-to-mp3-easy-guide',
+    title: 'How to Convert Video to MP3 (Easy Plain-Language Guide)',
+    excerpt: 'Turn any online video into high-bitrate MP3 music or podcast audio in under 10 seconds. Free and works on any phone.',
     publishedDate: 'September 28, 2026',
-    readTime: '8 min read',
-    author: 'Marcus Thorne · Video Infrastructure Engineer',
-    category: 'Engineering & Codecs',
-    contentMarkdown: 'Resolution numbers like "1080p" or "4K" tell only a fraction of the story. You can easily have a 720p file with a generous 10 Mbps bitrate that completely outperforms a heavily compressed "4K" stream choking at 3 Mbps.\n\nWhen you use Dispatch to fetch a public video stream, you are tapping into the upstream delivery network. Here is how modern platforms encode and deliver your media.\n\n### Adaptive Bitrate Streaming (DASH and HLS)\n\nPlatforms like YouTube and X rarely store video as a single static MP4 file. Instead, they slice video into 2- to 6-second chunks across multiple quality tiers:\n\n- H.264 (AVC): The universal workhorse. Plays on everything from modern iPhones to 15-year-old smart TVs.\n- VP9: Efficient Google-backed open format providing superior compression efficiency at high resolutions.\n- AV1: Next-generation open codec delivering exceptional quality at fractional bitrates.\n\n### Why 1080p Video Streams Often Require Multiplexing\n\nTo optimize bandwidth, platforms deliver video packets and audio packets on completely separate network channels. When your web browser plays a video, it combines them on the fly in memory.\n\nDispatch performs a clean server-side multiplexing pass: combining the highest-bitrate video stream with the uncompressed audio channel into a universal, standalone MP4 file with zero transcoding loss.',
-  },
-  {
-    slug: 'fair-use-and-responsible-offline-storage',
-    title: 'Fair Use, Offline Storage & Creator Rights: The Legal & Ethical Blueprint',
-    excerpt: 'A practical legal guide to what you can and cannot do with downloaded public social media content under international copyright doctrine.',
-    publishedDate: 'September 15, 2026',
-    readTime: '7 min read',
-    author: 'Sarah Jenkins, Esq. · Digital Rights Attorney',
-    category: 'Legal & Ethics',
-    contentMarkdown: 'Every tool carries an ethical responsibility. As public video and audio download utilities have grown in capability, understanding the legal boundaries of offline storage is essential for every user.\n\n### What Fair Use Protects\n\nUnder United States copyright law (17 U.S. Code § 107) and comparable fair-dealing doctrines in the UK, Canada, and the EU, four factors determine whether offline storage and use is legally permissible:\n\n1. The Purpose and Character of the Use: Non-commercial, educational, research, and transformative commentary purposes receive broad protection.\n2. The Nature of the Copyrighted Work: Factual news broadcasts and public informational talks enjoy broader fair use flexibility than commercial studio films.\n3. The Amount and Substantiality Used: Saving an excerpt for critique versus storing a creator entire portfolio.\n4. The Effect on the Market: Personal offline viewing does not harm the creator commercial market, whereas public re-uploading or redistribution does.\n\n### Rules of Thumb for Ethical Web Citizens\n\n- Always Credit Original Creators: If you reference a public clip in a lecture or presentation, always cite the creator handle and platform.\n- Never Resell or Commercialize: Never monetize or package downloaded media assets.\n- Respect Creator Takedown Requests: If a creator asks you to remove content you have saved or referenced, honor their request promptly.',
+    readTime: '3 min read',
+    author: 'Dispatch Team',
+    category: 'Audio Guide',
+    imageUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
+    contentMarkdown: `Sometimes you only want the sound: a live acoustic performance, an inspiring motivational speech, or an educational podcast. Converting video to MP3 gives you lightweight audio files you can listen to anywhere.
+
+### What Bitrate Should You Choose?
+- **320 kbps (Studio Quality):** The highest audio quality available in the MP3 format. Recommended for music and concert recordings.
+- **192 kbps (Standard):** Balanced between great sound and lightweight file size. Great for podcasts and audiobooks.
+
+### How to Convert in 3 Clicks
+1. Copy the video link from YouTube, TikTok, Facebook, or Instagram.
+2. Select the **Convert to MP3** tab on Dispatch.
+3. Paste the link and click **Download**. Your MP3 audio will download instantly to your music library!`,
   },
 ];

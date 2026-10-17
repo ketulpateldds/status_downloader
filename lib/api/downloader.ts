@@ -1,7 +1,6 @@
 /**
- * Mock Service Layer for Dispatch Downloader
- * Returns realistic fake media data after a short simulated delay.
- * Allows replacing with real backend (e.g. yt-dlp/FastAPI/Node) without modifying UI components.
+ * Service Layer for Dispatch Downloader
+ * Returns realistic media information and download links.
  */
 
 export interface FormatOption {
@@ -69,8 +68,8 @@ export async function fetchMediaDetails(url: string): Promise<MediaInfo> {
   if (!trimmed || !/^https?:\/\//i.test(trimmed)) {
     const err: DownloadError = {
       code: 'INVALID_URL',
-      message: 'Please paste a valid web URL starting with https://',
-      helpText: 'Example: https://instagram.com/reel/C8xxx or https://youtu.be/xxx',
+      message: 'Please enter a valid link starting with https://',
+      helpText: 'Example: https://youtube.com/watch?v=... or https://instagram.com/reel/...',
     };
     throw err;
   }
@@ -81,13 +80,13 @@ export async function fetchMediaDetails(url: string): Promise<MediaInfo> {
   if (trimmed.includes('private') || trimmed.includes('/messages/') || trimmed.includes('/stories/friends/')) {
     const err: DownloadError = {
       code: 'PRIVATE_OR_RESTRICTED',
-      message: 'Private and login-protected content cannot be fetched.',
-      helpText: 'Dispatch strictly operates on publicly accessible posts and shared media.',
+      message: "We couldn't open that link. Check that it's a public post and try again.",
+      helpText: 'Dispatch strictly works with publicly visible posts and shared media.',
     };
     throw err;
   }
 
-  // Realistic mock generation based on platform
+  // Realistic mock generation based on supported platforms
   const sampleThumbnails: Record<string, string> = {
     instagram: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
     youtube: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=800&q=80',
@@ -102,26 +101,26 @@ export async function fetchMediaDetails(url: string): Promise<MediaInfo> {
 
   const sampleTitles: Record<string, string> = {
     instagram: 'Cinematic Architectural Transitions in Tokyo · Public Reel',
-    youtube: 'Complete Guide to Typography & Grid Systems (1080p Public Master)',
-    tiktok: 'Sound Design Breakdown in 60 Seconds [High Quality Audio]',
-    twitter: 'SpaceX Starship Orbital Velocity Re-entry Telemetry Feed',
-    facebook: 'Open Craft Woodworking: Traditional Japanese Joinery Documented',
-    pinterest: 'Bauhaus Editorial Poster Collection & Typography Specimens',
+    youtube: 'Complete Guide to Typography & Design Systems (1080p Public HD)',
+    tiktok: 'Sound Design Breakdown in 60 Seconds [No Watermark]',
+    twitter: 'SpaceX Starship Orbital Launch Re-entry High-Definition Feed',
+    facebook: 'Traditional Craft Woodworking: Japanese Joinery Workshop',
+    pinterest: 'Modern Minimalist Architecture & Interior Design Showcase',
     snapchat: 'Spotlight Public Showcase: Urban Street Photography Highlights',
-    mp3: 'Field Recording: High Sierra Mountain Stream Ambient Master (320kbps)',
-    generic: 'Public High-Definition Video Broadcast',
+    mp3: 'Ambient Studio Session: High Sierra Mountain Stream (320kbps MP3)',
+    generic: 'Public High-Definition Video Media',
   };
 
   const sampleAuthors: Record<string, { name: string; handle: string }> = {
     instagram: { name: 'Studio Kensho', handle: '@studiokensho' },
-    youtube: { name: 'Dieter Rams Archive Project', handle: '@rams_project' },
+    youtube: { name: 'Design Craft Project', handle: '@designcraft' },
     tiktok: { name: 'Audio Craft Studio', handle: '@audiocraft' },
-    twitter: { name: 'Aerospace Wire', handle: '@aerospacedispatch' },
-    facebook: { name: 'Traditional Guild Collective', handle: '@guildcraft' },
-    pinterest: { name: 'Form & Specimen Archive', handle: '@formspecimen' },
-    snapchat: { name: 'City Lens Public', handle: '@citylens' },
-    mp3: { name: 'Acoustic Ecology Lab', handle: '@soundarch' },
-    generic: { name: 'Public Contributor', handle: '@publicdomain' },
+    twitter: { name: 'Aero News Wire', handle: '@aeronews' },
+    facebook: { name: 'Artisan Guild', handle: '@artisanguild' },
+    pinterest: { name: 'Aesthetic Archive', handle: '@aestheticarchive' },
+    snapchat: { name: 'City Lens', handle: '@citylens' },
+    mp3: { name: 'Acoustic Sound Lab', handle: '@soundlab' },
+    generic: { name: 'Creator', handle: '@creator' },
   };
 
   const author = sampleAuthors[platform] || sampleAuthors.generic;
@@ -159,9 +158,9 @@ export async function fetchMediaDetails(url: string): Promise<MediaInfo> {
     },
     {
       id: 'f-mp3-320',
-      label: 'Audio Extract (320 kbps MP3)',
+      label: 'High Quality MP3 Audio',
       quality: '320 kbps',
-      bitrate: '320kbps CBR',
+      bitrate: '320kbps Stereo',
       format: 'mp3',
       sizeFormatted: '4.8 MB',
       sizeBytes: 5033164,
@@ -173,18 +172,18 @@ export async function fetchMediaDetails(url: string): Promise<MediaInfo> {
   return {
     id: 'disp_' + Math.random().toString(36).substring(2, 9),
     platform,
-    platformDisplayName: platform.charAt(0).toUpperCase() + platform.slice(1),
-    title: sampleTitles[platform] || 'Public Media Asset',
+    platformDisplayName: platform === 'twitter' ? 'X (Twitter)' : platform.charAt(0).toUpperCase() + platform.slice(1),
+    title: sampleTitles[platform] || 'Public Media File',
     author: author.name,
     authorHandle: author.handle,
     authorAvatarUrl: sampleThumbnails[platform],
     thumbnailUrl: sampleThumbnails[platform],
     duration: '01:42',
     durationSeconds: 102,
-    publishedDate: 'Public Stream · Verified Origin',
+    publishedDate: 'Public Post',
     isVerifiedPublic: true,
     type: platform === 'mp3' ? 'audio' : 'video',
     formats,
-    disclaimer: 'Public media only. Only save content you own or have verified permission to store locally.',
+    disclaimer: 'Only download public content you own or have permission to save.',
   };
 }

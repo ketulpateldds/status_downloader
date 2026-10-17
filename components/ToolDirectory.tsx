@@ -1,7 +1,7 @@
-import React from 'react';
-import Link from 'next/link';
-import { platformList } from '@/content/platforms';
-import { ArrowUpRight } from 'lucide-react';
+import React from "react";
+import Link from "next/link";
+import { platformList } from "@/content/platforms";
+import { ArrowUpRight } from "lucide-react";
 
 export function ToolDirectory() {
   return (
@@ -16,7 +16,8 @@ export function ToolDirectory() {
           </h2>
         </div>
         <p className="font-sans text-xs text-ink-muted max-w-md leading-relaxed">
-          Each platform encodes video with distinct compression heuristics and CDNs. Explore dedicated tools tuned specifically for each service.
+          Each platform encodes video with distinct compression heuristics and
+          CDNs. Explore dedicated tools tuned specifically for each service.
         </p>
       </div>
 
@@ -24,7 +25,7 @@ export function ToolDirectory() {
         {platformList.map((plat) => (
           <Link
             key={plat.slug}
-            href={'/' + plat.slug}
+            href={"/" + plat.slug}
             className="wire-card p-6 flex flex-col justify-between group hover:shadow-tactile hover:-translate-y-1 transition-all"
           >
             <div className="space-y-4">
@@ -49,7 +50,10 @@ export function ToolDirectory() {
 
             <div className="pt-6 mt-6 border-t border-border-subtle flex flex-wrap gap-1 font-mono text-[10px] text-ink-faint">
               {plat.toolModes.map((mode) => (
-                <span key={mode.id} className="bg-paper-2 px-1.5 py-0.5 border border-border-subtle">
+                <span
+                  key={mode.id}
+                  className="bg-paper-2 px-1.5 py-0.5 border border-border-subtle"
+                >
                   {mode.label}
                 </span>
               ))}
