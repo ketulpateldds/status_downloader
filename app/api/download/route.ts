@@ -6,6 +6,10 @@ import {
   fbdown,
   twitter,
   pinterest,
+  spotify,
+  soundcloud,
+  capcut,
+  threads,
   aio,
 } from 'btch-downloader';
 import { detectPlatformFromUrl, MediaInfo, FormatOption } from '@/lib/api/downloader';
@@ -30,7 +34,7 @@ function withTimeout<T>(promise: Promise<T>, ms: number = 15000): Promise<T> {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { url } = body;
+    const { url, platform: platformHint } = body;
 
     if (!url || typeof url !== 'string' || !/^https?:\/\//i.test(url.trim())) {
       return NextResponse.json(
@@ -40,7 +44,9 @@ export async function POST(req: NextRequest) {
     }
 
     const cleanUrl = url.trim();
-    const platform = detectPlatformFromUrl(cleanUrl) || 'generic';
+    const platform = (platformHint && platformHint !== 'auto')
+      ? platformHint
+      : (detectPlatformFromUrl(cleanUrl) || 'generic');
 
     let title = 'Public Media File';
     let author = 'Creator';
@@ -217,6 +223,113 @@ export async function POST(req: NextRequest) {
           });
         }
       }
+    } else if (platform === 'spotify') {
+      const res = await withTimeout(spotify(cleanUrl));
+      if (res.result) {
+        if (res.result.title) title = res.result.title;
+        if (res.result.thumbnail) thumbnailUrl = res.result.thumbnail;
+        author = 'Spotify Artist';
+
+        if (Array.isArray(res.result.formats)) {
+          res.result.formats.forEach((fmt: any, idx: number) => {
+            if (fmt.url) {
+              formats.push({
+                id: `spotify-mp3-${idx}`,
+                label: `${fmt.quality || '320kbps'} MP3 Audio Track`,
+                quality: fmt.quality || '320kbps',
+                format: 'mp3',
+                sizeFormatted: fmt.filesize || 'Audio Track',
+                sizeBytes: 0,
+                url: fmt.url,
+                isAudioOnly: true,
+              });
+            }
+          });
+        }
+      }
+    } else if (platform === 'soundcloud') {
+      const res = await withTimeout(soundcloud(cleanUrl));
+      if (res.result) {
+        if (res.result.title) title = res.result.title;
+        if (res.result.thumbnail) thumbnailUrl = res.result.thumbnail;
+        author = 'SoundCloud Artist';
+
+        const audioUrl = res.result.downloadMp3 || res.result.audio;
+        if (audioUrl) {
+          formats.push({
+            id: 'soundcloud-mp3',
+            label: 'SoundCloud HQ MP3 Track',
+            quality: 'High Quality',
+            format: 'mp3',
+            sizeFormatted: 'Direct Stream',
+            sizeBytes: 0,
+            url: audioUrl,
+            isAudioOnly: true,
+          });
+        }
+        if (res.result.downloadArtwork) {
+          formats.push({
+            id: 'soundcloud-art',
+            label: 'Album Artwork (HD Cover)',
+            quality: 'HD',
+            format: 'jpg',
+            sizeFormatted: 'Original Image',
+            sizeBytes: 0,
+            url: res.result.downloadArtwork,
+            isAudioOnly: false,
+          });
+        }
+      }
+    } else if (platform === 'capcut') {
+      const res = await withTimeout(capcut(cleanUrl));
+      if (res.title) title = res.title;
+      if (res.coverUrl) thumbnailUrl = res.coverUrl;
+      if (res.authorName) author = res.authorName;
+
+      if (res.originalVideoUrl) {
+        formats.push({
+          id: 'capcut-video',
+          label: 'CapCut Template Video (No Watermark)',
+          quality: 'Original HD',
+          format: 'mp4',
+          sizeFormatted: 'Direct Link',
+          sizeBytes: 0,
+          url: res.originalVideoUrl,
+          isAudioOnly: false,
+        });
+      }
+    } else if (platform === 'threads') {
+      const res = await withTimeout(threads(cleanUrl));
+      title = 'Threads Post Media';
+      author = 'Threads Creator';
+
+      if (res.result) {
+        if (res.result.image) thumbnailUrl = res.result.image;
+        if (res.result.type === 'video' && res.result.video) {
+          formats.push({
+            id: 'threads-video',
+            label: 'Threads Video (MP4)',
+            quality: 'Original HD',
+            format: 'mp4',
+            sizeFormatted: 'Direct Link',
+            sizeBytes: 0,
+            url: res.result.video,
+            isAudioOnly: false,
+          });
+        }
+        if (res.result.image) {
+          formats.push({
+            id: 'threads-image',
+            label: 'Threads Photo (JPG)',
+            quality: 'Original',
+            format: 'jpg',
+            sizeFormatted: 'Direct Image',
+            sizeBytes: 0,
+            url: res.result.image,
+            isAudioOnly: false,
+          });
+        }
+      }
     } else {
       // Try All-In-One (aio) extractor as fallback
       const res = await withTimeout(aio(cleanUrl));
@@ -264,6 +377,14 @@ export async function POST(req: NextRequest) {
       platformDisplayName:
         platform === 'twitter'
           ? 'X (Twitter)'
+          : platform === 'capcut'
+          ? 'CapCut'
+          : platform === 'soundcloud'
+          ? 'SoundCloud'
+          : platform === 'youtube'
+          ? 'YouTube'
+          : platform === 'tiktok'
+          ? 'TikTok'
           : platform.charAt(0).toUpperCase() + platform.slice(1),
       title,
       author,

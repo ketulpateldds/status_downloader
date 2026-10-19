@@ -61,7 +61,7 @@ export default function HomePage() {
       priceCurrency: "USD",
     },
     description:
-      "Free online video and audio downloader for YouTube, Instagram, TikTok, Facebook, X, Pinterest, and Snapchat.",
+      "Free online video and audio downloader for YouTube, Instagram, TikTok, Facebook, X, Pinterest, Spotify, SoundCloud, CapCut, and Threads.",
   };
 
   return (
@@ -228,10 +228,10 @@ export default function HomePage() {
                     />
                   </div>
 
-                  {/* Snapchat Tile */}
+                  {/* Spotify Tile */}
                   <div className="absolute bottom-0 left-28 animate-float-slow">
                     <PlatformAppTile
-                      platform="snapchat"
+                      platform="spotify"
                       className="w-13 h-13 rounded-2xl shadow-md"
                       iconClassName="w-7 h-7"
                     />
@@ -253,7 +253,7 @@ export default function HomePage() {
         </section>
 
         {/* =========================================================================
-            SECTION 3: POPULAR PLATFORMS (7 CARDS)
+            SECTION 3: POPULAR PLATFORMS (10 CARDS)
            ========================================================================= */}
         <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
@@ -265,7 +265,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3.5 sm:gap-4">
             {popularPlatformsList.map((plat) => (
               <Link
                 key={plat.slug}

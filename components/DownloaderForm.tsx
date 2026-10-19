@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import {
   fetchMediaDetails,
@@ -24,11 +24,13 @@ import {
   ArrowRight,
   RefreshCw,
   ShieldCheck,
+  Layers,
 } from 'lucide-react';
 import { popularSitesChips } from '@/data/supportedSites';
 
 interface DownloaderFormProps {
   defaultPlatformSlug?: string;
+  defaultTab?: 'video' | 'audio' | 'mp3' | 'mp4';
   customPlaceholder?: string;
   hideSupportedChips?: boolean;
   hideTabs?: boolean;
@@ -37,19 +39,65 @@ interface DownloaderFormProps {
 
 export function DownloaderForm({
   defaultPlatformSlug,
+  defaultTab,
   customPlaceholder,
   hideSupportedChips,
   hideTabs,
   className = '',
 }: DownloaderFormProps) {
-  const [activeTab, setActiveTab] = useState<'video' | 'audio' | 'mp3' | 'mp4' | 'more'>('video');
+  const initialTab = defaultTab
+    ? defaultTab
+    : (defaultPlatformSlug === 'mp3' || defaultPlatformSlug === 'spotify' || defaultPlatformSlug === 'soundcloud')
+    ? 'audio'
+    : 'video';
+
+  const [activeTab, setActiveTab] = useState<'video' | 'audio' | 'mp3' | 'mp4' | 'more'>(initialTab);
   const [url, setUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [mediaResult, setMediaResult] = useState<MediaInfo | null>(null);
   const [errorState, setErrorState] = useState<string | null>(null);
   const [downloadSuccessId, setDownloadSuccessId] = useState<string | null>(null);
 
-  const detectedPlatform = detectPlatformFromUrl(url) || defaultPlatformSlug;
+  const effectivePlatform = detectPlatformFromUrl(url) || defaultPlatformSlug;
+
+  // Filter formats based on the active download mode (Video vs Audio/MP3)
+  const filteredFormats = useMemo(() => {
+    if (!mediaResult?.formats || mediaResult.formats.length === 0) return [];
+
+    if (activeTab === 'audio' || activeTab === 'mp3') {
+      const audioOnly = mediaResult.formats.filter(
+        (fmt) => fmt.isAudioOnly || fmt.format === 'mp3' || fmt.format === 'm4a'
+      );
+      // If audio formats exist, return ONLY audio formats
+      if (audioOnly.length > 0) return audioOnly;
+    }
+
+    if (activeTab === 'video' || activeTab === 'mp4') {
+      const videoOnly = mediaResult.formats.filter(
+        (fmt) => !fmt.isAudioOnly && fmt.format !== 'mp3' && fmt.format !== 'm4a'
+      );
+      // If video formats exist, return ONLY video formats
+      if (videoOnly.length > 0) return videoOnly;
+    }
+
+    return mediaResult.formats;
+  }, [mediaResult, activeTab]);
+
+  const getDynamicPlaceholder = () => {
+    if (customPlaceholder) return customPlaceholder;
+    if (activeTab === 'audio' || activeTab === 'mp3') return 'Paste a video or music link to extract MP3...';
+    if (defaultPlatformSlug === 'tiktok') return 'Paste a TikTok video link (e.g. https://www.tiktok.com/@.../video/...)';
+    if (defaultPlatformSlug === 'instagram') return 'Paste an Instagram Reel, video, or post link...';
+    if (defaultPlatformSlug === 'youtube') return 'Paste a YouTube video or Shorts link (e.g. https://youtu.be/...)';
+    if (defaultPlatformSlug === 'twitter') return 'Paste an X / Twitter post link (e.g. https://x.com/.../status/...)';
+    if (defaultPlatformSlug === 'facebook') return 'Paste a Facebook video link (e.g. https://fb.watch/...)';
+    if (defaultPlatformSlug === 'pinterest') return 'Paste a Pinterest pin link (e.g. https://pin.it/...)';
+    if (defaultPlatformSlug === 'spotify') return 'Paste a Spotify track or album link (e.g. https://open.spotify.com/track/...)';
+    if (defaultPlatformSlug === 'soundcloud') return 'Paste a SoundCloud song link (e.g. https://soundcloud.com/...)';
+    if (defaultPlatformSlug === 'capcut') return 'Paste a CapCut template link (e.g. https://www.capcut.com/template-detail/...)';
+    if (defaultPlatformSlug === 'threads') return 'Paste a Threads post link (e.g. https://www.threads.net/@.../post/...)';
+    return 'Paste a video, song, or post link here (e.g. TikTok, Instagram, YouTube, Spotify...)';
+  };
 
   const handlePasteClipboard = async () => {
     try {
@@ -85,7 +133,7 @@ export function DownloaderForm({
 
     setIsLoading(true);
     try {
-      const data = await fetchMediaDetails(url);
+      const data = await fetchMediaDetails(url, effectivePlatform);
       setMediaResult(data);
     } catch (err: unknown) {
       const dErr = err as DownloadError;
@@ -192,6 +240,14 @@ export function DownloaderForm({
             </button>
 
             <Link
+              href="/batch"
+              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 hover:text-emerald-800 whitespace-nowrap transition-all border border-emerald-200/60"
+            >
+              <Layers className="w-4 h-4 text-emerald-600" />
+              <span>Batch Downloader</span>
+            </Link>
+
+            <Link
               href="/#tools"
               className="flex items-center gap-1 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-navy-muted hover:text-brand-blue hover:bg-blue-50 whitespace-nowrap ml-auto"
             >
@@ -219,10 +275,10 @@ export function DownloaderForm({
 
         {/* Input & Action Row */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="flex flex-col xl:flex-row items-stretch gap-2.5 bg-slate-50 p-2 sm:p-2.5 rounded-2xl border border-slate-200/80 focus-within:border-brand-blue focus-within:ring-4 focus-within:ring-blue-500/10 transition-all">
+          <div className="flex flex-col md:flex-row items-stretch gap-2.5 bg-slate-50 p-2 sm:p-2.5 rounded-2xl border border-slate-200/80 focus-within:border-brand-blue focus-within:ring-4 focus-within:ring-blue-500/10 transition-all">
             
             {/* Input field */}
-            <div className="relative flex-1 flex items-center min-w-0">
+            <div className="relative flex-1 flex items-center min-w-0 bg-white md:bg-transparent rounded-xl md:rounded-none border md:border-none border-slate-200/60">
               <Link2 className="w-5 h-5 text-slate-400 ml-3 shrink-0" />
               <input
                 type="text"
@@ -231,12 +287,7 @@ export function DownloaderForm({
                   setUrl(e.target.value);
                   if (errorState) setErrorState(null);
                 }}
-                placeholder={
-                  customPlaceholder ||
-                  (activeTab === 'audio' || activeTab === 'mp3'
-                    ? 'Paste a video or music link to extract MP3...'
-                    : 'Paste a video or post link here (e.g. YouTube, Instagram, TikTok...)')
-                }
+                placeholder={getDynamicPlaceholder()}
                 className="w-full bg-transparent px-3 py-3 text-sm sm:text-base font-sans text-navy placeholder:text-slate-400 focus:outline-none"
               />
 
@@ -281,11 +332,11 @@ export function DownloaderForm({
             </button>
           </div>
 
-          {/* Auto-detected platform chip */}
-          {detectedPlatform && url.length > 5 && (
+          {/* Platform chip */}
+          {url && effectivePlatform && effectivePlatform !== 'generic' && (
             <div className="flex items-center gap-2 text-xs font-semibold text-brand-blue bg-blue-50/80 px-3 py-1.5 rounded-full w-fit animate-in fade-in duration-200">
               <Sparkles className="w-3.5 h-3.5" />
-              <span className="capitalize">{detectedPlatform} link detected</span>
+              <span className="capitalize">{effectivePlatform} detected</span>
             </div>
           )}
         </form>
@@ -380,12 +431,57 @@ export function DownloaderForm({
 
             {/* Quality & Download Options */}
             <div>
-              <div className="text-xs font-bold text-navy uppercase tracking-wider mb-3">
-                Choose Format & Download:
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                <div className="text-xs font-bold text-navy uppercase tracking-wider flex items-center gap-1.5">
+                  {activeTab === 'audio' || activeTab === 'mp3' ? (
+                    <>
+                      <Music className="w-3.5 h-3.5 text-pink-500" />
+                      <span>Audio Format & Download:</span>
+                    </>
+                  ) : activeTab === 'video' || activeTab === 'mp4' ? (
+                    <>
+                      <Video className="w-3.5 h-3.5 text-blue-500" />
+                      <span>Video Format & Download:</span>
+                    </>
+                  ) : (
+                    <span>Choose Format & Download:</span>
+                  )}
+                </div>
+
+                {/* If both video and audio formats are available, allow quick switching */}
+                {mediaResult.formats.some((f) => f.isAudioOnly || f.format === 'mp3') &&
+                  mediaResult.formats.some((f) => !f.isAudioOnly && f.format !== 'mp3') && (
+                    <div className="inline-flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg text-xs font-semibold">
+                      <button
+                        type="button"
+                        onClick={() => setActiveTab('audio')}
+                        className={`flex items-center gap-1 px-2.5 py-1 rounded-md transition-all ${
+                          activeTab === 'audio' || activeTab === 'mp3'
+                            ? 'bg-brand-blue text-white shadow-xs'
+                            : 'text-navy-muted hover:text-navy'
+                        }`}
+                      >
+                        <Music className="w-3 h-3" />
+                        <span>Audio</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setActiveTab('video')}
+                        className={`flex items-center gap-1 px-2.5 py-1 rounded-md transition-all ${
+                          activeTab === 'video' || activeTab === 'mp4'
+                            ? 'bg-brand-blue text-white shadow-xs'
+                            : 'text-navy-muted hover:text-navy'
+                        }`}
+                      >
+                        <Video className="w-3 h-3" />
+                        <span>Video</span>
+                      </button>
+                    </div>
+                  )}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                {mediaResult.formats.map((fmt) => (
+                {filteredFormats.map((fmt) => (
                   <div
                     key={fmt.id}
                     className="p-3.5 rounded-xl bg-white border border-slate-200 hover:border-brand-blue flex items-center justify-between gap-3 transition-all group"

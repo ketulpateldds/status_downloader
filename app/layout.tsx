@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: '%s · Dispatch',
   },
   description:
-    'Download videos, music, and photos from YouTube, Instagram, TikTok, Facebook, X, Pinterest, and Snapchat. Fast, safe, 100% free, and no registration needed.',
+    'Download videos, music, and photos from YouTube, Instagram, TikTok, Facebook, X, Pinterest, Spotify, SoundCloud, CapCut, and Threads. Fast, safe, 100% free, and no registration needed.',
   keywords: [
     'dispatch video downloader',
     'free video downloader',

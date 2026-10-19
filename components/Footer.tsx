@@ -4,13 +4,17 @@ import { Download, ShieldCheck } from "lucide-react";
 
 export function Footer() {
   const downloaders = [
-    { name: "YouTube Downloader", href: "/youtube" },
-    { name: "Instagram Downloader", href: "/instagram" },
     { name: "TikTok Downloader", href: "/tiktok" },
+    { name: "Instagram Downloader", href: "/instagram" },
+    { name: "YouTube Downloader", href: "/youtube" },
+    { name: "Twitter / X Downloader", href: "/twitter" },
     { name: "Facebook Downloader", href: "/facebook" },
-    { name: "X (Twitter) Downloader", href: "/twitter" },
     { name: "Pinterest Downloader", href: "/pinterest" },
-    { name: "Snapchat Downloader", href: "/snapchat" },
+    { name: "Spotify Downloader", href: "/spotify" },
+    { name: "SoundCloud Downloader", href: "/soundcloud" },
+    { name: "CapCut Downloader", href: "/capcut" },
+    { name: "Threads Downloader", href: "/threads" },
+    { name: "Batch Downloader (Bulk)", href: "/batch" },
   ];
 
   const converters = [
@@ -141,7 +145,7 @@ export function Footer() {
         <div className="pt-8 space-y-4 text-xs text-slate-400">
           <p className="leading-relaxed">
             <strong>Disclaimer:</strong> Not affiliated with YouTube, Instagram,
-            TikTok, Facebook, X, Pinterest, or Snapchat. Dispatch does not host
+            TikTok, Facebook, X, Pinterest, Spotify, SoundCloud, CapCut, or Threads. Dispatch does not host
             or store any videos on its servers. All media is downloaded directly
             from third-party content delivery networks. Users are solely
             responsible for ensuring they have the legal right or permission to

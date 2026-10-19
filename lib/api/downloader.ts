@@ -7,7 +7,7 @@ export interface FormatOption {
   id: string;
   label: string;
   quality: string;
-  format: 'mp4' | 'mp3' | 'jpg' | 'png' | 'webp';
+  format: 'mp4' | 'mp3' | 'm4a' | 'webm' | 'jpg' | 'png' | 'webp';
   resolution?: string;
   bitrate?: string;
   sizeFormatted: string;
@@ -18,7 +18,19 @@ export interface FormatOption {
 
 export interface MediaInfo {
   id: string;
-  platform: 'instagram' | 'youtube' | 'tiktok' | 'twitter' | 'facebook' | 'pinterest' | 'snapchat' | 'mp3' | 'generic';
+  platform:
+    | 'tiktok'
+    | 'instagram'
+    | 'youtube'
+    | 'twitter'
+    | 'facebook'
+    | 'pinterest'
+    | 'spotify'
+    | 'soundcloud'
+    | 'capcut'
+    | 'threads'
+    | 'mp3'
+    | 'generic';
   platformDisplayName: string;
   title: string;
   author: string;
@@ -49,18 +61,21 @@ export interface DownloadError {
 
 export function detectPlatformFromUrl(url: string): MediaInfo['platform'] | null {
   const clean = url.trim().toLowerCase();
+  if (/tiktok\.com/.test(clean)) return 'tiktok';
   if (/instagram\.com/.test(clean)) return 'instagram';
   if (/youtube\.com|youtu\.be/.test(clean)) return 'youtube';
-  if (/tiktok\.com/.test(clean)) return 'tiktok';
   if (/twitter\.com|x\.com/.test(clean)) return 'twitter';
   if (/facebook\.com|fb\.watch/.test(clean)) return 'facebook';
   if (/pinterest\.com|pin\.it/.test(clean)) return 'pinterest';
-  if (/snapchat\.com/.test(clean)) return 'snapchat';
+  if (/spotify\.com/.test(clean)) return 'spotify';
+  if (/soundcloud\.com/.test(clean)) return 'soundcloud';
+  if (/capcut\.com/.test(clean)) return 'capcut';
+  if (/threads\.net/.test(clean)) return 'threads';
   if (/\.(mp3|wav|m4a|aac)(\?.*)?$/i.test(clean)) return 'mp3';
   return null;
 }
 
-export async function fetchMediaDetails(url: string): Promise<MediaInfo> {
+export async function fetchMediaDetails(url: string, platformHint?: string): Promise<MediaInfo> {
   const trimmed = url.trim();
   if (!trimmed || !/^https?:\/\//i.test(trimmed)) {
     const err: DownloadError = {
@@ -78,7 +93,7 @@ export async function fetchMediaDetails(url: string): Promise<MediaInfo> {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ url: trimmed }),
+      body: JSON.stringify({ url: trimmed, platform: platformHint }),
     });
 
     if (apiRes.ok) {
@@ -120,37 +135,46 @@ export async function fetchMediaDetails(url: string): Promise<MediaInfo> {
 
   // Realistic mock generation based on supported platforms
   const sampleThumbnails: Record<string, string> = {
+    tiktok: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=800&q=80',
     instagram: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
     youtube: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=800&q=80',
-    tiktok: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=800&q=80',
     twitter: 'https://images.unsplash.com/photo-1516251193007-45ef944ab0c6?auto=format&fit=crop&w=800&q=80',
     facebook: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80',
     pinterest: 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=800&q=80',
-    snapchat: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+    spotify: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
+    soundcloud: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80',
+    capcut: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=800&q=80',
+    threads: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=800&q=80',
     mp3: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
     generic: 'https://images.unsplash.com/photo-1507842229451-7975ab938808?auto=format&fit=crop&w=800&q=80',
   };
 
   const sampleTitles: Record<string, string> = {
+    tiktok: 'Sound Design Breakdown in 60 Seconds [No Watermark]',
     instagram: 'Cinematic Architectural Transitions in Tokyo · Public Reel',
     youtube: 'Complete Guide to Typography & Design Systems (1080p Public HD)',
-    tiktok: 'Sound Design Breakdown in 60 Seconds [No Watermark]',
     twitter: 'SpaceX Starship Orbital Launch Re-entry High-Definition Feed',
     facebook: 'Traditional Craft Woodworking: Japanese Joinery Workshop',
     pinterest: 'Modern Minimalist Architecture & Interior Design Showcase',
-    snapchat: 'Spotlight Public Showcase: Urban Street Photography Highlights',
+    spotify: 'Acoustic Studio Sessions · High Fidelity Master (320kbps MP3)',
+    soundcloud: 'Electronic Horizon DJ Set · Original Audio Mix (HQ MP3)',
+    capcut: 'Viral Cinematic Color Grading Video Template [No Watermark]',
+    threads: 'Design Concept Discussion & Visual Media Thread',
     mp3: 'Ambient Studio Session: High Sierra Mountain Stream (320kbps MP3)',
     generic: 'Public High-Definition Video Media',
   };
 
   const sampleAuthors: Record<string, { name: string; handle: string }> = {
+    tiktok: { name: 'Audio Craft Studio', handle: '@audiocraft' },
     instagram: { name: 'Studio Kensho', handle: '@studiokensho' },
     youtube: { name: 'Design Craft Project', handle: '@designcraft' },
-    tiktok: { name: 'Audio Craft Studio', handle: '@audiocraft' },
     twitter: { name: 'Aero News Wire', handle: '@aeronews' },
     facebook: { name: 'Artisan Guild', handle: '@artisanguild' },
     pinterest: { name: 'Aesthetic Archive', handle: '@aestheticarchive' },
-    snapchat: { name: 'City Lens', handle: '@citylens' },
+    spotify: { name: 'Spotify Music Track', handle: '@spotifyartist' },
+    soundcloud: { name: 'SoundCloud Creator', handle: '@soundcloudupd' },
+    capcut: { name: 'CapCut Creator', handle: '@capcuteditor' },
+    threads: { name: 'Threads User', handle: '@threadsuser' },
     mp3: { name: 'Acoustic Sound Lab', handle: '@soundlab' },
     generic: { name: 'Creator', handle: '@creator' },
   };
@@ -204,7 +228,18 @@ export async function fetchMediaDetails(url: string): Promise<MediaInfo> {
   return {
     id: 'disp_' + Math.random().toString(36).substring(2, 9),
     platform,
-    platformDisplayName: platform === 'twitter' ? 'X (Twitter)' : platform.charAt(0).toUpperCase() + platform.slice(1),
+    platformDisplayName:
+      platform === 'twitter'
+        ? 'X (Twitter)'
+        : platform === 'capcut'
+        ? 'CapCut'
+        : platform === 'soundcloud'
+        ? 'SoundCloud'
+        : platform === 'youtube'
+        ? 'YouTube'
+        : platform === 'tiktok'
+        ? 'TikTok'
+        : platform.charAt(0).toUpperCase() + platform.slice(1),
     title: sampleTitles[platform] || 'Public Media File',
     author: author.name,
     authorHandle: author.handle,

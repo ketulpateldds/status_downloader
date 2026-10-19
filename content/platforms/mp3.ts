@@ -143,7 +143,7 @@ export const mp3Content: PlatformContent = {
   faqs: [
     {
       question: 'Which platforms can I extract MP3 audio from?',
-      answer: 'Dispatch supports extracting audio from all major public video platforms including YouTube, Instagram Reels, TikTok, X (Twitter), Facebook, Pinterest, and Snapchat.',
+      answer: 'Dispatch supports extracting audio from all major public platforms including YouTube, Instagram Reels, TikTok, X (Twitter), Facebook, Pinterest, Spotify, SoundCloud, CapCut, and Threads.',
     },
     {
       question: 'What is the bitrate of the downloaded MP3 files?',

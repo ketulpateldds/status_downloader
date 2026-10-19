@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown, Download } from "lucide-react";
+import { Menu, X, ChevronDown, Download, Layers } from "lucide-react";
 import { PlatformAppTile } from "./PlatformIcon";
 
 export function Header() {
@@ -43,17 +43,20 @@ export function Header() {
   }, [pathname]);
 
   const platformLinks = [
-    { name: "YouTube", slug: "youtube", badge: "HD & 8K" },
+    { name: "TikTok", slug: "tiktok", badge: "No Watermark" },
     {
       name: "Instagram",
       slug: "instagram",
       badge: "Reels & Stories",
     },
-    { name: "TikTok", slug: "tiktok", badge: "No Watermark" },
+    { name: "YouTube", slug: "youtube", badge: "HD & 8K" },
+    { name: "Twitter / X", slug: "twitter", badge: "HD & GIFs" },
     { name: "Facebook", slug: "facebook", badge: "Reels & Watch" },
-    { name: "X (Twitter)", slug: "twitter", badge: "HD & GIFs" },
     { name: "Pinterest", slug: "pinterest", badge: "Videos & Pins" },
-    { name: "Snapchat", slug: "snapchat", badge: "Spotlight" },
+    { name: "Spotify", slug: "spotify", badge: "320kbps MP3" },
+    { name: "SoundCloud", slug: "soundcloud", badge: "HQ Audio" },
+    { name: "CapCut", slug: "capcut", badge: "No Watermark" },
+    { name: "Threads", slug: "threads", badge: "HD Media" },
   ];
 
   const converterLinks = [
@@ -188,6 +191,21 @@ export function Header() {
           </div>
 
           <Link
+            href="/batch"
+            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
+              pathname === "/batch"
+                ? "text-brand-blue font-semibold"
+                : "text-navy-muted hover:text-navy hover:bg-slate-50"
+            }`}
+          >
+            <Layers className="w-4 h-4 text-brand-blue" />
+            <span>Batch Downloader</span>
+            <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded-full bg-blue-50 text-brand-blue border border-blue-200/60">
+              Bulk
+            </span>
+          </Link>
+
+          <Link
             href="/#tools"
             className="px-3.5 py-2 rounded-lg text-sm font-medium text-navy-muted hover:text-navy hover:bg-slate-50 transition-colors"
           >
@@ -229,6 +247,22 @@ export function Header() {
             className="block px-3 py-2 rounded-xl text-base font-semibold text-navy hover:bg-slate-50"
           >
             Home
+          </Link>
+
+          <Link
+            href="/batch"
+            onClick={() => setMobileMenuOpen(false)}
+            className={`flex items-center justify-between px-3 py-2 rounded-xl text-base font-semibold ${
+              pathname === "/batch" ? "text-brand-blue" : "text-navy"
+            } hover:bg-slate-50`}
+          >
+            <div className="flex items-center gap-2">
+              <Layers className="w-5 h-5 text-brand-blue" />
+              <span>Batch Downloader</span>
+            </div>
+            <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-blue-50 text-brand-blue border border-blue-200/60">
+              Bulk
+            </span>
           </Link>
 
           <div className="pt-2">
