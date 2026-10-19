@@ -61,9 +61,6 @@ export function detectPlatformFromUrl(url: string): MediaInfo['platform'] | null
 }
 
 export async function fetchMediaDetails(url: string): Promise<MediaInfo> {
-  // Simulate network latency (600 - 900ms)
-  await new Promise((resolve) => setTimeout(resolve, 750));
-
   const trimmed = url.trim();
   if (!trimmed || !/^https?:\/\//i.test(trimmed)) {
     const err: DownloadError = {
@@ -73,6 +70,41 @@ export async function fetchMediaDetails(url: string): Promise<MediaInfo> {
     };
     throw err;
   }
+
+  // 1. Attempt live extraction using server-side btch-downloader API
+  try {
+    const apiRes = await fetch('/api/download', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ url: trimmed }),
+    });
+
+    if (apiRes.ok) {
+      const liveData: MediaInfo = await apiRes.json();
+      return liveData;
+    } else {
+      const errJson = await apiRes.json().catch(() => ({}));
+      if (errJson.error) {
+        throw new Error(errJson.error);
+      }
+    }
+  } catch (err: unknown) {
+    if (err instanceof Error && err.message && !err.message.includes('fetch')) {
+      const dErr: DownloadError = {
+        code: 'CONTENT_UNAVAILABLE',
+        message: err.message,
+        helpText: 'Make sure the post is public, not private or age-restricted, and accessible.',
+      };
+      throw dErr;
+    }
+    // If network or server error, proceed to fallback mock
+    console.warn('Real download endpoint returned error, using fallback:', err);
+  }
+
+  // Fallback simulation (for demo / testing)
+  await new Promise((resolve) => setTimeout(resolve, 600));
 
   const platform = detectPlatformFromUrl(trimmed) || 'generic';
 

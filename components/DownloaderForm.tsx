@@ -6,6 +6,7 @@ import {
   fetchMediaDetails,
   detectPlatformFromUrl,
   MediaInfo,
+  FormatOption,
   DownloadError,
 } from '@/lib/api/downloader';
 import { validateInputUrl } from '@/lib/validation/url';
@@ -31,6 +32,7 @@ interface DownloaderFormProps {
   customPlaceholder?: string;
   hideSupportedChips?: boolean;
   hideTabs?: boolean;
+  className?: string;
 }
 
 export function DownloaderForm({
@@ -38,6 +40,7 @@ export function DownloaderForm({
   customPlaceholder,
   hideSupportedChips,
   hideTabs,
+  className = '',
 }: DownloaderFormProps) {
   const [activeTab, setActiveTab] = useState<'video' | 'audio' | 'mp3' | 'mp4' | 'more'>('video');
   const [url, setUrl] = useState('');
@@ -94,20 +97,45 @@ export function DownloaderForm({
     }
   };
 
-  const triggerDownload = (formatLabel: string, formatId: string) => {
-    setDownloadSuccessId(formatId);
-    // Simulate real browser download behavior
-    const link = document.createElement('a');
-    link.href = '#';
-    link.setAttribute('download', `${mediaResult?.title || 'media'}.${formatId.includes('mp3') ? 'mp3' : 'mp4'}`);
-    document.body.appendChild(link);
-    setTimeout(() => {
-      document.body.removeChild(link);
-    }, 100);
+  const triggerDownload = (fmt: FormatOption) => {
+    setDownloadSuccessId(fmt.id);
+
+    // Sanitize filename from media title
+    const rawTitle = mediaResult?.title || 'media';
+    const cleanTitle = rawTitle
+      .replace(/[\/\\?%*:|"<>#]/g, '')
+      .trim()
+      .replace(/\s+/g, '_')
+      .substring(0, 80);
+    const filename = `${cleanTitle || 'media'}.${fmt.format || 'mp4'}`;
+
+    if (fmt.url && fmt.url.startsWith('http')) {
+      // Route through our local proxy endpoint which forces 'Content-Disposition: attachment'
+      // This downloads the file directly to the user's device without leaving the page or opening a player
+      const downloadEndpoint = `/api/download/file?url=${encodeURIComponent(fmt.url)}&filename=${encodeURIComponent(filename)}`;
+
+      const link = document.createElement('a');
+      link.href = downloadEndpoint;
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      setTimeout(() => {
+        document.body.removeChild(link);
+      }, 200);
+    } else {
+      const link = document.createElement('a');
+      link.href = '#';
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      setTimeout(() => {
+        document.body.removeChild(link);
+      }, 150);
+    }
   };
 
   return (
-    <div id="downloader" className="w-full max-w-4xl mx-auto scroll-mt-28">
+    <div id="downloader" className={`w-full mx-auto scroll-mt-28 ${className}`}>
       <div className="bg-white rounded-3xl sm:rounded-4xl shadow-card border border-slate-100 p-5 sm:p-8 relative">
         
         {/* Navigation Tabs (Shown on Home Page) or Focused Header (Shown on Platform Pages) */}
@@ -379,7 +407,7 @@ export function DownloaderForm({
                     </div>
 
                     <button
-                      onClick={() => triggerDownload(fmt.label, fmt.id)}
+                      onClick={() => triggerDownload(fmt)}
                       className="px-4 py-2 rounded-xl bg-brand-gradient text-white font-bold text-xs shadow-sm hover:opacity-95 active:scale-95 transition-all flex items-center gap-1.5 shrink-0"
                     >
                       <Download className="w-3.5 h-3.5" />
